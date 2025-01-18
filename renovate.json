@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor"
+  ],
+  "baseBranches": ["main"],
+  "labels": ["dependencies"],
+  "kubernetes": {
+    "fileMatch": ["\\.yaml$"]
+  }
+}
