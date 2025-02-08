@@ -10,9 +10,9 @@ spec:
     targetRevision: 7.8.2
     helm:
       parameters:
-        - name: configs.params.server.disable.auth
+        - name: "configs.params.server\\.disable\\.auth"
           value: "true"
-        - name: configs.params.server.insecure
+        - name: "configs.params.server\\.insecure"
           value: "true"
     chart: argo-cd
   destination:
