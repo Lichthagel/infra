@@ -1,0 +1,19 @@
+traefik:
+  ingressRoute:
+    dashboard:
+      enabled: true
+  providers:
+    kubernetesCRD:
+      allowExternalNameServices: true
+    kubernetesIngress:
+      allowExternalNameServices: true
+  ports:
+    web:
+      nodePort: 80
+    websecure:
+      nodePort: 443
+    traefik:
+      expose:
+        default: true
+  service:
+    type: "NodePort"
