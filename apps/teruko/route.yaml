@@ -13,4 +13,4 @@ spec:
         - name: teruko
           port: 7777
   tls:
-    certResolver: default
+    secretName: teruko-tls
