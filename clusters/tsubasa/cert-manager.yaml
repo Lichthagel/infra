@@ -9,6 +9,10 @@ spec:
     repoURL: https://github.com/Lichthagel/infra
     path: apps/cert-manager
     targetRevision: HEAD
+    helm:
+      parameters:
+        - name: caIssuer.enabled
+          value: "true"
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

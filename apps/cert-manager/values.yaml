@@ -1,3 +1,6 @@
 cert-manager:
   crds:
     enabled: true
+
+caIssuer:
+  enabled: false
