@@ -18,6 +18,8 @@ spec:
           value: '443'
         - name: ports.traefik.expose.default
           value: 'true'
+        - name: service.type
+          value: NodePort
     chart: traefik
   destination:
     server: https://kubernetes.default.svc
