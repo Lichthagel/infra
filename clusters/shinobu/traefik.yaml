@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shinobu-traefik
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/traefik
+    targetRevision: HEAD
+    helm:
+      parameters:
+        - name: traefik.ports.web.nodePort
+          value: "30080"
+        - name: traefik.ports.websecure.nodePort
+          value: "30443"
+        - name: traefik.providers.kubernetesCRD.allowExternalNameServices
+          value: "false"
+        - name: traefik.providers.kubernetesIngress.allowExternalNameServices
+          value: "false"
+  destination:
+    server: https://shinobu:6443
+    namespace: traefik
