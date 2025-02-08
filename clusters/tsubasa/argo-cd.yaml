@@ -11,10 +11,35 @@ spec:
     helm:
       parameters:
         - name: configs.params.server.disable.auth
-          value: 'true'
+          value: "true"
         - name: configs.params.server.insecure
-          value: 'true'
+          value: "true"
     chart: argo-cd
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-cd
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argo-cd-server
+  namespace: argo-cd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`argocd`)
+      priority: 10
+      services:
+        - name: argo-cd-argocd-server
+          port: 80
+    - kind: Rule
+      match: Host(`argocd`) && Header(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: argo-cd-argocd-server
+          port: 80
+          scheme: h2c
+  tls:
+    certResolver: default
