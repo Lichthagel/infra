@@ -12,6 +12,10 @@ spec:
       parameters:
         - name: ingressRoute.dashboard.enabled
           value: 'true'
+        - name: providers.kubernetesCRD.allowExternalNameServices
+          value: 'true'
+        - name: providers.kubernetesIngress.allowExternalNameServices
+          value: 'true'
         - name: ports.web.nodePort
           value: '80'
         - name: ports.websecure.nodePort
