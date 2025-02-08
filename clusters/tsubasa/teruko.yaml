@@ -1,33 +1,14 @@
-apiVersion: v1
-kind: Namespace
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: teruko
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: teruko
-  namespace: teruko
+  namespace: argo-cd
 spec:
-  type: ExternalName
-  externalName: tsubasa
-  ports:
-    - port: 7777
-      targetPort: 7777
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: teruko
-  namespace: teruko
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`teruko`)
-      services:
-        - name: teruko
-          port: 7777
-  tls:
-    certResolver: default
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/teruko
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik

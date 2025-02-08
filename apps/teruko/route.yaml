@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: teruko
+  namespace: teruko
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`teruko`)
+      services:
+        - name: teruko
+          port: 7777
+  tls:
+    certResolver: default
