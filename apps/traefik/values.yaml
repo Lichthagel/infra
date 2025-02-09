@@ -12,3 +12,6 @@ traefik:
         default: true
   service:
     type: "NodePort"
+
+nginx:
+  passthrough: false
