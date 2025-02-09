@@ -9,6 +9,12 @@ spec:
     repoURL: https://github.com/Lichthagel/infra
     path: apps/traefik
     targetRevision: HEAD
+    helm:
+      parameters:
+        - name: traefik.providers.kubernetesCRD.allowExternalNameServices
+          value: "true"
+        - name: traefik.providers.kubernetesIngress.allowExternalNameServices
+          value: "true"
   destination:
     server: https://kubernetes.default.svc
     namespace: traefik

@@ -15,10 +15,6 @@ spec:
           value: "30080"
         - name: traefik.ports.websecure.nodePort
           value: "30443"
-        - name: traefik.providers.kubernetesCRD.allowExternalNameServices
-          value: "false"
-        - name: traefik.providers.kubernetesIngress.allowExternalNameServices
-          value: "false"
   destination:
     server: https://shinobu:6443
     namespace: traefik

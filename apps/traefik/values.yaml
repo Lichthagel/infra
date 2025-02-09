@@ -2,11 +2,6 @@ traefik:
   ingressRoute:
     dashboard:
       enabled: true
-  providers:
-    kubernetesCRD:
-      allowExternalNameServices: true
-    kubernetesIngress:
-      allowExternalNameServices: true
   ports:
     web:
       nodePort: 80
