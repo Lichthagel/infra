@@ -13,6 +13,8 @@ spec:
       parameters:
         - name: caIssuer.enabled
           value: "true"
+        - name: acmeIssuer.enabled
+          value: "true"
   destination:
     server: https://shinobu:6443
     namespace: cert-manager

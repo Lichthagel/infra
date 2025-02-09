@@ -4,3 +4,6 @@ cert-manager:
 
 caIssuer:
   enabled: false
+
+acmeIssuer:
+  enabled: false
