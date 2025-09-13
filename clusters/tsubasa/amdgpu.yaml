@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: amd-gpu
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: amd-gpu
+    repoURL: https://rocm.github.io/k8s-device-plugin/
+    targetRevision: 0.20.0
