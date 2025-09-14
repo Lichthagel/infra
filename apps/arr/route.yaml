@@ -13,6 +13,11 @@ spec:
         - name: arr
           port: 8080
     - kind: Rule
+      match: Host(`nzbget`)
+      services:
+        - name: arr
+          port: 6789
+    - kind: Rule
       match: Host(`prowlarr`)
       services:
         - name: arr

@@ -77,6 +77,32 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: nzbget
+          image: lscr.io/linuxserver/nzbget:version-v25.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: nzbget
+              containerPort: 6789
+              protocol: TCP
+          volumeMounts:
+            - name: nzbget-config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:2.0.5
           imagePullPolicy: IfNotPresent
@@ -217,6 +243,9 @@ spec:
         - name: qbittorrent-config
           persistentVolumeClaim:
             claimName: qbittorrent-config-pvc
+        - name: nzbget-config
+          persistentVolumeClaim:
+            claimName: nzbget-config-pvc
         - name: downloads
           hostPath:
             path: /mnt/d/Downloads
