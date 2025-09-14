@@ -239,6 +239,23 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: flaresolverr
+          image: ghcr.io/flaresolverr/flaresolverr:v3.4.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: flaresolverr
+              containerPort: 8191
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
