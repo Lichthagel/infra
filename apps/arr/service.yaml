@@ -37,4 +37,8 @@ spec:
       protocol: TCP
       port: 6767
       targetPort: bazarr
+    - name: jellyseerr
+      protocol: TCP
+      port: 5055
+      targetPort: jellyseerr
   type: ClusterIP

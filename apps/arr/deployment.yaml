@@ -256,6 +256,26 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: jellyseerr
+          image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: jellyseerr
+              containerPort: 5055
+              protocol: TCP
+          volumeMounts:
+            - name: jellyseerr-config
+              mountPath: /app/config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
@@ -281,6 +301,9 @@ spec:
         - name: bazarr-config
           persistentVolumeClaim:
             claimName: bazarr-config-pvc
+        - name: jellyseerr-config
+          persistentVolumeClaim:
+            claimName: jellyseerr-config-pvc
         - name: tv-shows
           hostPath:
             path: "/mnt/d/Videos/TV Shows"
