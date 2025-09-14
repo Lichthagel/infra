@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arr
+  namespace: arr
+  labels:
+    app: arr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arr
+  template:
+    metadata:
+      labels:
+        app: arr
+    spec:
+      initContainers:
+        - name: gluetun
+          restartPolicy: Always
+          image: qmcgaw/gluetun
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: "TZ"
+              value: "Europe/Berlin"
+            - name: "VPN_SERVICE_PROVIDER"
+              value: "protonvpn"
+            - name: "VPN_TYPE"
+              value: "wireguard"
+            - name: "WIREGUARD_PRIVATE_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: protonvpn
+                  key: wireguard_private_key
+            - name: "SECURE_CORE_ONLY"
+              value: "on"
+      containers:
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:5.1.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: WEBUI_PORT
+              value: "8080"
+          ports:
+            - name: webui
+              containerPort: 8080
+              protocol: TCP
+            # - name: torrent
+            #   containerPort: 6881
+            #   protocol: TCP
+            # - name: torrent-udp
+            #   containerPort: 6881
+            #   protocol: UDP
+          volumeMounts:
+            - name: qbittorrent-config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:2.0.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: prowlarr
+              containerPort: 9696
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+      volumes:
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-pvc
+        - name: downloads
+          hostPath:
+            path: /mnt/d/Downloads

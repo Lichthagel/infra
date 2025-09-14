@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arr
+  namespace: arr
+  labels:
+    app: arr
+spec:
+  selector:
+    app: arr
+  ports:
+    - name: qbittorrent
+      protocol: TCP
+      port: 8080
+      targetPort: webui
+    - name: prowlarr
+      protocol: TCP
+      port: 9696
+      targetPort: prowlarr
+  type: ClusterIP

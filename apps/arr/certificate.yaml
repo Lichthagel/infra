@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: arr
+  namespace: arr
+spec:
+  secretName: arr-tls
+  dnsNames:
+    - qbittorrent
+    - prowlarr
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
