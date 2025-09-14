@@ -91,6 +91,9 @@ spec:
             - name: prowlarr
               containerPort: 9696
               protocol: TCP
+          volumeMounts:
+            - name: prowlarr-config
+              mountPath: /config
           resources:
             requests:
               cpu: "100m"
@@ -105,3 +108,6 @@ spec:
         - name: downloads
           hostPath:
             path: /mnt/d/Downloads
+        - name: prowlarr-config
+          persistentVolumeClaim:
+            claimName: prowlarr-config-pvc
