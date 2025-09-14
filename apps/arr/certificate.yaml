@@ -9,6 +9,7 @@ spec:
     - qbittorrent
     - prowlarr
     - sonarr
+    - radarr
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

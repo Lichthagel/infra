@@ -129,6 +129,34 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:5.27.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: radarr
+              containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - name: radarr-config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+            - name: movies
+              mountPath: /movies
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
@@ -142,7 +170,14 @@ spec:
         - name: sonarr-config
           persistentVolumeClaim:
             claimName: sonarr-config-pvc
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
         - name: tv-shows
           hostPath:
             path: "/mnt/d/Videos/TV Shows"
+            type: Directory
+        - name: movies
+          hostPath:
+            path: "/mnt/d/Videos/Movies"
             type: Directory

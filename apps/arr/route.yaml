@@ -22,5 +22,10 @@ spec:
       services:
         - name: arr
           port: 8989
+    - kind: Rule
+      match: Host(`radarr`)
+      services:
+        - name: arr
+          port: 7878
   tls:
     secretName: arr-tls
