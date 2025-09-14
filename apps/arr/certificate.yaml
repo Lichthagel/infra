@@ -11,6 +11,7 @@ spec:
     - sonarr
     - radarr
     - lidarr
+    - bazarr
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

@@ -32,5 +32,10 @@ spec:
       services:
         - name: arr
           port: 8686
+    - kind: Rule
+      match: Host(`bazarr`)
+      services:
+        - name: arr
+          port: 6767
   tls:
     secretName: arr-tls

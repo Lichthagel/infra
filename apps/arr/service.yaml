@@ -29,4 +29,8 @@ spec:
       protocol: TCP
       port: 8686
       targetPort: lidarr
+    - name: bazarr
+      protocol: TCP
+      port: 6767
+      targetPort: bazarr
   type: ClusterIP

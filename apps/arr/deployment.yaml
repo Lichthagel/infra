@@ -185,6 +185,34 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: bazarr
+          image: lscr.io/linuxserver/bazarr:1.5.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: bazarr
+              containerPort: 6767
+              protocol: TCP
+          volumeMounts:
+            - name: bazarr-config
+              mountPath: /config
+            - name: tv-shows
+              mountPath: /tv
+            - name: movies
+              mountPath: /movies
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
@@ -204,6 +232,9 @@ spec:
         - name: lidarr-config
           persistentVolumeClaim:
             claimName: lidarr-config-pvc
+        - name: bazarr-config
+          persistentVolumeClaim:
+            claimName: bazarr-config-pvc
         - name: tv-shows
           hostPath:
             path: "/mnt/d/Videos/TV Shows"
