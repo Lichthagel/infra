@@ -4,9 +4,15 @@
     "config:recommended",
     "docker:enableMajor"
   ],
-  "baseBranches": ["main"],
-  "labels": ["dependencies"],
+  "baseBranchPatterns": [
+    "main"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "kubernetes": {
-    "fileMatch": ["\\.yaml$"]
+    "managerFilePatterns": [
+      "/\\.yaml$/"
+    ]
   }
 }
