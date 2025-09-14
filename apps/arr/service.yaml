@@ -25,4 +25,8 @@ spec:
       protocol: TCP
       port: 7878
       targetPort: radarr
+    - name: lidarr
+      protocol: TCP
+      port: 8686
+      targetPort: lidarr
   type: ClusterIP

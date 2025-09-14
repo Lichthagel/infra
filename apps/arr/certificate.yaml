@@ -10,6 +10,7 @@ spec:
     - prowlarr
     - sonarr
     - radarr
+    - lidarr
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

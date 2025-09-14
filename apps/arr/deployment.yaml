@@ -157,6 +157,34 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: lidarr
+          image: lscr.io/linuxserver/lidarr:2.13.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: lidarr
+              containerPort: 8686
+              protocol: TCP
+          volumeMounts:
+            - name: lidarr-config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+            - name: music
+              mountPath: /music
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
@@ -173,6 +201,9 @@ spec:
         - name: radarr-config
           persistentVolumeClaim:
             claimName: radarr-config-pvc
+        - name: lidarr-config
+          persistentVolumeClaim:
+            claimName: lidarr-config-pvc
         - name: tv-shows
           hostPath:
             path: "/mnt/d/Videos/TV Shows"
@@ -180,4 +211,8 @@ spec:
         - name: movies
           hostPath:
             path: "/mnt/d/Videos/Movies"
+            type: Directory
+        - name: music
+          hostPath:
+            path: "/mnt/d/Music"
             type: Directory

@@ -27,5 +27,10 @@ spec:
       services:
         - name: arr
           port: 7878
+    - kind: Rule
+      match: Host(`lidarr`)
+      services:
+        - name: arr
+          port: 8686
   tls:
     secretName: arr-tls
