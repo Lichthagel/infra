@@ -38,6 +38,10 @@ spec:
                   key: wireguard_private_key
             - name: "SECURE_CORE_ONLY"
               value: "on"
+            - name: DNS_KEEP_NAMESERVER
+              value: "on"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.43.0.0/16"
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:5.1.2
