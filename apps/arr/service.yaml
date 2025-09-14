@@ -17,4 +17,8 @@ spec:
       protocol: TCP
       port: 9696
       targetPort: prowlarr
+    - name: sonarr
+      protocol: TCP
+      port: 8989
+      targetPort: sonarr
   type: ClusterIP

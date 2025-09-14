@@ -101,6 +101,34 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+        - name: sonarr
+          image: ghcr.io/linuxserver/sonarr:4.0.15
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: sonarr
+              containerPort: 8989
+              protocol: TCP
+          volumeMounts:
+            - name: sonarr-config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+            - name: tv-shows
+              mountPath: /tv
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
@@ -111,3 +139,10 @@ spec:
         - name: prowlarr-config
           persistentVolumeClaim:
             claimName: prowlarr-config-pvc
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-config-pvc
+        - name: tv-shows
+          hostPath:
+            path: "/mnt/d/Videos/TV Shows"
+            type: Directory

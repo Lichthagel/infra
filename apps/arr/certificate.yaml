@@ -8,6 +8,7 @@ spec:
   dnsNames:
     - qbittorrent
     - prowlarr
+    - sonarr
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

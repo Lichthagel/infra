@@ -17,5 +17,10 @@ spec:
       services:
         - name: arr
           port: 9696
+    - kind: Rule
+      match: Host(`sonarr`)
+      services:
+        - name: arr
+          port: 8989
   tls:
     secretName: arr-tls
