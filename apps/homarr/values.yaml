@@ -1,0 +1,3 @@
+homarr:
+  env:
+    TZ: "Europe/Berlin"
