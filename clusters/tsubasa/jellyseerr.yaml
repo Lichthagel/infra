@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jellyseerr
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/jellyseerr
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jellyseerr

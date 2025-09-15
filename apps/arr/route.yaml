@@ -42,10 +42,5 @@ spec:
       services:
         - name: arr
           port: 6767
-    - kind: Rule
-      match: Host(`jellyseerr`)
-      services:
-        - name: arr
-          port: 5055
   tls:
     secretName: arr-tls

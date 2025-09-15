@@ -13,7 +13,6 @@ spec:
     - radarr
     - lidarr
     - bazarr
-    - jellyseerr
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer
