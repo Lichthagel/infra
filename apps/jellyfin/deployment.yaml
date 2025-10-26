@@ -47,7 +47,7 @@ spec:
             limits:
               cpu: "4000m"
               memory: "1Gi"
-              amd.com/gpu: "1"
+              nvidia.com/gpu: "1"
           volumeMounts:
             - name: config
               mountPath: /config
@@ -55,6 +55,7 @@ spec:
               mountPath: /cache
             - name: media
               mountPath: /media
+          runtimeClassName: nvidia
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -64,5 +65,5 @@ spec:
             claimName: jellyfin-cache-pvc
         - name: media
           hostPath:
-            path: /mnt/d
+            path: /mnt/data/media
             type: Directory
