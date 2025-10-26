@@ -104,7 +104,7 @@ spec:
               cpu: "500m"
               memory: "1Gi"
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:2.0.5
+          image: lscr.io/linuxserver/prowlarr:2.1.5
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
