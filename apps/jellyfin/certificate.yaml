@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: jellyfin-tls
   dnsNames:
-    - jellyfin
+    - jellyfin.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

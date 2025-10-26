@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: argo-cd-tls
   dnsNames:
-    - argocd
+    - argocd.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

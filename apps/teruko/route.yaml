@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`teruko`)
+      match: Host(`teruko.licht`)
       services:
         - name: teruko
           port: 7777

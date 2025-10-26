@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: teruko-tls
   dnsNames:
-    - teruko
+    - teruko.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

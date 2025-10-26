@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: homarr-tls
   dnsNames:
-    - homarr
+    - homarr.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`jellyfin`)
+      match: Host(`jellyfin.licht`)
       services:
         - name: jellyfin-service
           port: 8096

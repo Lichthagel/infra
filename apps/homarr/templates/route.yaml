@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`homarr`)
+      match: Host(`homarr.licht`)
       services:
         - name: homarr
           port: 7575

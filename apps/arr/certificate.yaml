@@ -6,13 +6,13 @@ metadata:
 spec:
   secretName: arr-tls
   dnsNames:
-    - qbittorrent
-    - nzbget
-    - prowlarr
-    - sonarr
-    - radarr
-    - lidarr
-    - bazarr
+    - qbittorrent.licht
+    - nzbget.licht
+    - prowlarr.licht
+    - sonarr.licht
+    - radarr.licht
+    - lidarr.licht
+    - bazarr.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

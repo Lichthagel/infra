@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`jellyseerr`)
+      match: Host(`jellyseerr.licht`)
       services:
         - name: jellyseerr
           port: 5055

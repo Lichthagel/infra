@@ -8,37 +8,37 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`qbittorrent`)
+      match: Host(`qbittorrent.licht`)
       services:
         - name: arr
           port: 8080
     - kind: Rule
-      match: Host(`nzbget`)
+      match: Host(`nzbget.licht`)
       services:
         - name: arr
           port: 6789
     - kind: Rule
-      match: Host(`prowlarr`)
+      match: Host(`prowlarr.licht`)
       services:
         - name: arr
           port: 9696
     - kind: Rule
-      match: Host(`sonarr`)
+      match: Host(`sonarr.licht`)
       services:
         - name: arr
           port: 8989
     - kind: Rule
-      match: Host(`radarr`)
+      match: Host(`radarr.licht`)
       services:
         - name: arr
           port: 7878
     - kind: Rule
-      match: Host(`lidarr`)
+      match: Host(`lidarr.licht`)
       services:
         - name: arr
           port: 8686
     - kind: Rule
-      match: Host(`bazarr`)
+      match: Host(`bazarr.licht`)
       services:
         - name: arr
           port: 6767
