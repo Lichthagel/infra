@@ -55,7 +55,7 @@ spec:
               mountPath: /cache
             - name: media
               mountPath: /media
-          runtimeClassName: nvidia
+      runtimeClassName: nvidia
       volumes:
         - name: config
           persistentVolumeClaim:
