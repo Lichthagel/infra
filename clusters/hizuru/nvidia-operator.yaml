@@ -12,7 +12,11 @@ spec:
     chart: gpu-operator
     helm:
       parameters:
-      - name: driver.enabled
-        value: "false"
+        - name: driver.enabled
+          value: "false"
+        - name: cdi.enabled
+          value: "true"
+        - name: cdi.default
+          value: "true"
     repoURL: https://helm.ngc.nvidia.com/nvidia
     targetRevision: v25.3.4
