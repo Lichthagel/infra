@@ -14,7 +14,5 @@ spec:
       parameters:
       - name: driver.enabled
         value: "false"
-      - name: toolkit.enabled
-        value: "false"
     repoURL: https://helm.ngc.nvidia.com/nvidia
     targetRevision: v25.3.4
