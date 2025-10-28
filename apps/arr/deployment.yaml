@@ -21,10 +21,11 @@ spec:
           image: docker.io/qmcgaw/gluetun:v3.40.0
           imagePullPolicy: IfNotPresent
           securityContext:
-            privileged: true
             capabilities:
               add:
                 - NET_ADMIN
+                - NET_RAW
+                - MKNOD
           env:
             - name: "TZ"
               value: "Europe/Berlin"
