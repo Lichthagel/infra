@@ -240,7 +240,7 @@ spec:
               cpu: "500m"
               memory: "1Gi"
         - name: flaresolverr
-          image: ghcr.io/flaresolverr/flaresolverr:v3.4.2
+          image: ghcr.io/flaresolverr/flaresolverr:v3.4.3
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
