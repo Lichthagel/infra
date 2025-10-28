@@ -283,13 +283,13 @@ spec:
             claimName: bazarr-config-pvc
         - name: tv-shows
           hostPath:
-            path: "/mnt/d/Videos/TV Shows"
+            path: "/mnt/data/media/tvshows"
             type: Directory
         - name: movies
           hostPath:
-            path: "/mnt/d/Videos/Movies"
+            path: "/mnt/data/media/movies"
             type: Directory
         - name: music
           hostPath:
-            path: "/mnt/d/Music"
+            path: "/mnt/data/media/music"
             type: Directory
