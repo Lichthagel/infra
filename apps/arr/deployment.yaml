@@ -21,6 +21,7 @@ spec:
           image: docker.io/qmcgaw/gluetun:v3.40.0
           imagePullPolicy: IfNotPresent
           securityContext:
+            privileged: true
             capabilities:
               add:
                 - NET_ADMIN
