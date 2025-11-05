@@ -130,7 +130,7 @@ spec:
               cpu: "500m"
               memory: "1Gi"
         - name: sonarr
-          image: ghcr.io/linuxserver/sonarr:4.0.15
+          image: ghcr.io/linuxserver/sonarr:4.0.16
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
