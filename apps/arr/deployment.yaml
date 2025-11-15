@@ -43,7 +43,7 @@ spec:
             - name: DNS_KEEP_NAMESERVER
               value: "on"
             - name: FIREWALL_OUTBOUND_SUBNETS
-              value: "10.244.0.0/16"
+              value: "10.96.0.0/12"
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:5.1.2
