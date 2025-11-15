@@ -3,9 +3,14 @@ kind: Service
 metadata:
   name: teruko
   namespace: teruko
+  labels:
+    app: teruko
 spec:
-  type: ExternalName
-  externalName: tsubasa
+  selector:
+    app: teruko
   ports:
-    - port: 7777
-      targetPort: 7777
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: http
+  type: ClusterIP
