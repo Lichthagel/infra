@@ -14,9 +14,11 @@ spec:
       parameters:
         - name: driver.enabled
           value: "false"
+        - name: toolkit.enabled
+          value: "false"
         - name: cdi.enabled
           value: "true"
         - name: cdi.default
           value: "true"
     repoURL: https://helm.ngc.nvidia.com/nvidia
-    targetRevision: v25.3.4
+    targetRevision: v25.10.0
