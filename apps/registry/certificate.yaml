@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: registry
+  namespace: registry
+spec:
+  secretName: registry-tls
+  dnsNames:
+    - registry.licht
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer

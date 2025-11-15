@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: registry
+  namespace: registry
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`registry.licht`)
+      services:
+        - name: registry-service
+          port: 5000
+  tls:
+    secretName: registry-tls
