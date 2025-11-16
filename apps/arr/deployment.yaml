@@ -267,7 +267,8 @@ spec:
             claimName: nzbget-config-pvc
         - name: downloads
           hostPath:
-            path: /mnt/d/Downloads
+            path: "/mnt/data/downloads"
+            type: Directory
         - name: prowlarr-config
           persistentVolumeClaim:
             claimName: prowlarr-config-pvc
