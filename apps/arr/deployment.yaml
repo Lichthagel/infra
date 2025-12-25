@@ -18,7 +18,7 @@ spec:
       initContainers:
         - name: gluetun
           restartPolicy: Always
-          image: docker.io/qmcgaw/gluetun:v3.40.4
+          image: docker.io/qmcgaw/gluetun:v3.41.0
           imagePullPolicy: IfNotPresent
           securityContext:
             capabilities:
