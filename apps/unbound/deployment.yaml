@@ -34,7 +34,7 @@ spec:
             cpu: "500m"
         volumeMounts:
         - name: unbound-config
-          mountPath: /etc/unbound/unbound.d/custom.conf
+          mountPath: /etc/unbound/unbound.conf
           subPath: unbound.conf
         livenessProbe:
           tcpSocket:
