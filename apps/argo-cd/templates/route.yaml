@@ -11,13 +11,13 @@ spec:
       match: {{ range $index, $host := .Values.hostnames }}{{ if $index }} || {{ end }}Host(`{{ $host }}`){{ end }}
       priority: 10
       services:
-        - name: argo-cd-argocd-server
+        - name: {{ .Release.Name }}-argocd-server
           port: 80
     - kind: Rule
       match: ({{ range $index, $host := .Values.hostnames }}{{ if $index }} || {{ end }}Host(`{{ $host }}`){{ end }}) && Header(`Content-Type`, `application/grpc`)
       priority: 11
       services:
-        - name: argo-cd-argocd-server
+        - name: {{ .Release.Name }}-argocd-server
           port: 80
           scheme: h2c
   tls:
