@@ -14,5 +14,10 @@
     "managerFilePatterns": [
       "/\\.yaml$/"
     ]
+  },
+  "argocd": {
+    "fileMatch": [
+      "\\.yaml$"
+    ]
   }
 }
