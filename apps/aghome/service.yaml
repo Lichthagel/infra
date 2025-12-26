@@ -37,20 +37,3 @@ spec:
     nodePort: 853
     protocol: UDP
   type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: aghome-doh
-  namespace: aghome
-  labels:
-    app: aghome
-spec:
-  selector:
-    app: aghome
-  ports:
-  - name: https
-    port: 443
-    targetPort: 443
-    protocol: TCP
-  type: ClusterIP
