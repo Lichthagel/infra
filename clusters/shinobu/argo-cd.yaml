@@ -13,7 +13,7 @@ spec:
       valuesObject:
         hostnames:
           - argocd.licht
-          - argocd.shinobuŝ.licht
+          - argocd.shinobu.licht
   destination:
     server: https://shinobu:6443
     namespace: argo-cd
