@@ -9,6 +9,11 @@ spec:
     repoURL: https://github.com/Lichthagel/infra
     path: apps/argo-cd
     targetRevision: HEAD
+    helm:
+      valuesObject:
+        hostnames:
+          - argocd.licht
+          - argocd.shinobuŝ.licht
   destination:
     server: https://shinobu:6443
     namespace: argo-cd

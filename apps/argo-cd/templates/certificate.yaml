@@ -5,8 +5,7 @@ metadata:
   namespace: argo-cd
 spec:
   secretName: argo-cd-tls
-  dnsNames:
-    - argocd.licht
+  dnsNames: {{ .Values.hostnames | toYaml | nindent 4 }}
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer
