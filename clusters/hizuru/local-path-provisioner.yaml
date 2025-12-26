@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-path-provisioner
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rancher/local-path-provisioner
+    path: deploy
+    targetRevision: v0.0.33
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: local-path-storage
