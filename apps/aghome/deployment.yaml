@@ -48,9 +48,6 @@ spec:
           mountPath: /opt/adguardhome/conf
         - name: work
           mountPath: /opt/adguardhome/work
-        - name: aghome-config
-          mountPath: /opt/adguardhome/conf/AdGuardHome.yaml
-          subPath: AdGuardHome.yaml
         - name: tls-cert
           mountPath: /opt/adguardhome/certs
           readOnly: true
@@ -75,9 +72,6 @@ spec:
       - name: work
         persistentVolumeClaim:
           claimName: aghome-work
-      - name: aghome-config
-        configMap:
-          name: aghome-config
       - name: tls-cert
         secret:
           secretName: dns-tls

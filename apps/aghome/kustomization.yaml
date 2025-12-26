@@ -9,8 +9,3 @@ resources:
   - pvc.yaml
   - route.yaml
   - service.yaml
-
-configMapGenerator:
-  - name: aghome-config
-    files:
-      - AdGuardHome.yaml
