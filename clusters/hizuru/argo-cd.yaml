@@ -10,12 +10,12 @@ spec:
     path: apps/argo-cd
     targetRevision: HEAD
     helm:
-      parameters:
-        - name: argo-cd.configs.params.server.disable.auth
-          value: "true"
-        - name: argo-cd.configs.params.server.insecure
-          value: "true"
       valuesObject:
+        argo-cd:
+          configs:
+            params:
+              server.disable.auth: true
+              server.insecure: true
         hostnames:
           - argocd.licht
           - argocd.hizuru.licht
