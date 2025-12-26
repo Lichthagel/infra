@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: unbound
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/unbound
+    targetRevision: HEAD
+  destination:
+    server: https://shinobu:6443
+    namespace: unbound

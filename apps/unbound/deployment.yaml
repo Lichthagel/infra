@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unbound
+  namespace: unbound
+  labels:
+    app: unbound
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unbound
+  template:
+    metadata:
+      labels:
+        app: unbound
+    spec:
+      containers:
+      - name: unbound
+        image: klutchell/unbound:1.24.2
+        ports:
+        - containerPort: 5353
+          name: dns-udp
+          protocol: UDP
+        - containerPort: 5353
+          name: dns-tcp
+          protocol: TCP
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: unbound-config
+          mountPath: /etc/unbound/unbound.d/custom.conf
+          subPath: unbound.conf
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "dig @127.0.0.1 -p 5353 google.com +short"
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "dig @127.0.0.1 -p 5353 google.com +short"
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: unbound-config
+        configMap:
+          name: unbound-config
