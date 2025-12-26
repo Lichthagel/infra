@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aghome
+  namespace: aghome
+  labels:
+    app: aghome
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: aghome
+  template:
+    metadata:
+      labels:
+        app: aghome
+    spec:
+      containers:
+      - name: aghome
+        image: adguard/adguardhome:v0.107.71
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        - containerPort: 853
+          name: dns-over-tls
+          protocol: TCP
+        - containerPort: 853
+          name: dns-over-quic
+          protocol: UDP
+        env:
+        - name: TZ
+          value: "Europe/Berlin"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: config
+          mountPath: /opt/adguardhome/conf
+        - name: work
+          mountPath: /opt/adguardhome/work
+        - name: aghome-config
+          mountPath: /opt/adguardhome/conf/AdGuardHome.yaml
+          subPath: AdGuardHome.yaml
+        - name: tls-cert
+          mountPath: /opt/adguardhome/certs
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: aghome-config
+      - name: work
+        persistentVolumeClaim:
+          claimName: aghome-work
+      - name: aghome-config
+        configMap:
+          name: aghome-config
+      - name: tls-cert
+        secret:
+          secretName: dns-tls
