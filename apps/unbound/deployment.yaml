@@ -19,10 +19,10 @@ spec:
       - name: unbound
         image: klutchell/unbound:1.24.2
         ports:
-        - containerPort: 5353
+        - containerPort: 53
           name: dns-udp
           protocol: UDP
-        - containerPort: 5353
+        - containerPort: 53
           name: dns-tcp
           protocol: TCP
         resources:
@@ -34,17 +34,17 @@ spec:
             cpu: "500m"
         volumeMounts:
         - name: unbound-config
-          mountPath: /etc/unbound/unbound.conf
+          mountPath: /etc/unbound/custom.conf.d/custom.conf
           subPath: unbound.conf
         livenessProbe:
           tcpSocket:
-            port: 5353
+            port: 53
           initialDelaySeconds: 30
           periodSeconds: 30
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
-            port: 5353
+            port: 53
           initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 5
