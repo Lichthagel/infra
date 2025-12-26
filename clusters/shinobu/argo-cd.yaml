@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd
+  name: shinobu-argo-cd
   namespace: argo-cd
 spec:
   project: default
@@ -9,12 +9,6 @@ spec:
     repoURL: https://github.com/Lichthagel/infra
     path: apps/argo-cd
     targetRevision: HEAD
-    helm:
-      parameters:
-        - name: argo-cd.configs.params.server.disable.auth
-          value: "true"
-        - name: argo-cd.configs.params.server.insecure
-          value: "true"
   destination:
-    server: https://kubernetes.default.svc
+    server: https://shinobu:6443
     namespace: argo-cd

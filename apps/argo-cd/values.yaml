@@ -1,5 +1,0 @@
-argo-cd:
-  configs:
-    params:
-      server.disable.auth: "true"
-      server.insecure: "true"
