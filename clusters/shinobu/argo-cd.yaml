@@ -11,6 +11,10 @@ spec:
     targetRevision: HEAD
     helm:
       valuesObject:
+        argo-cd:
+          configs:
+            params:
+              server.insecure: true
         hostnames:
           - argocd.licht
           - argocd.shinobu.licht
