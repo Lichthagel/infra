@@ -7,8 +7,12 @@ spec:
   project: default
   source:
     repoURL: https://github.com/rancher/local-path-provisioner
-    path: deploy
+    path: deploy/chart/local-path-provisioner
     targetRevision: v0.0.33
+    helm:
+      valuesObject:
+        storageClass:
+          defaultClass: true
   destination:
     server: https://shinobu:6443
     namespace: local-path-storage
