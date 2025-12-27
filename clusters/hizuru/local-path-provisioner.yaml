@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hizuru-local-path-provisioner
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rancher/local-path-provisioner
+    path: deploy/chart/local-path-provisioner
+    targetRevision: v0.0.33
+    helm:
+      valuesObject:
+        storageClass:
+          defaultClass: true
+        nodePathMap:
+          - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+            paths:
+              - /mnt/data/local-path
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: local-path-storage
