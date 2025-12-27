@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: local-path-provisioner
+  name: shinobu-local-path-provisioner
   namespace: argo-cd
 spec:
   project: default
