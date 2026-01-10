@@ -25,5 +25,5 @@ appVersion: "5.11.0"
 
 dependencies:
   - name: homarr
-    version: 8.8.1
+    version: 8.9.0
     repository: oci://ghcr.io/homarr-labs/charts
