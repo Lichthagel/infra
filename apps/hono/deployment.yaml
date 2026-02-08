@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hono
+  namespace: hono
+  labels:
+    app: hono
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hono
+  template:
+    metadata:
+      labels:
+        app: hono
+    spec:
+      containers:
+        - name: hono
+          image: hono-shinobu:latest
+          imagePullPolicy: Never
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Berlin"
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 10
+            tcpSocket:
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 10
+            tcpSocket:
+              port: http
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
