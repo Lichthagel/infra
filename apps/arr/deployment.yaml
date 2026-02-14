@@ -80,7 +80,7 @@ spec:
               cpu: "500m"
               memory: "1Gi"
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:26.0.20260206
+          image: lscr.io/linuxserver/nzbget:26.0.20260213
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
