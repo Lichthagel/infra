@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: aghome
-        image: adguard/adguardhome:v0.107.71
+        image: adguard/adguardhome:v0.107.72
         ports:
         - containerPort: 3000
           name: http
