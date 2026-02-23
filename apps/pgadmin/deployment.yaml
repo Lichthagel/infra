@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pgadmin-deployment
+  name: pgadmin
   namespace: pgadmin
   labels:
     app: pgadmin
@@ -16,21 +16,33 @@ spec:
         app: pgadmin
     spec:
       containers:
-      - name: pgadmin
-        image: dpage/pgadmin4:9.12.0
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-        env:
-        - name: PGADMIN_DEFAULT_EMAIL
-          value: "admin@admin.com"
-        - name: PGADMIN_DEFAULT_PASSWORD
-          value: "admin"
-        - name: SCRIPT_NAME
-          value: "/pgadmin"
+        - name: pgadmin
+          image: dpage/pgadmin4:9.12.0
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "admin@admin.com"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "admin"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: /misc/ping
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: /misc/ping
+              port: http
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

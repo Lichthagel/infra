@@ -1,14 +1,16 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: pgadmin-ingressroute
+  name: pgadmin
   namespace: pgadmin
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
-    - match: PathPrefix(`/pgadmin`)
-      kind: Rule
+    - kind: Rule
+      match: Host(`pgadmin.licht`)
       services:
-        - name: pgadmin-service
+        - name: pgadmin
           port: 80
+  tls:
+    secretName: pgadmin-tls
