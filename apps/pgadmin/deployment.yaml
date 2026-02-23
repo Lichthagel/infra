@@ -26,7 +26,7 @@ spec:
             - name: PGADMIN_DEFAULT_PASSWORD
               value: "admin"
             - name: PGADMIN_SERVER_JSON_FILE
-              value: "/pgadmin4/servers.json"
+              value: "/etc/pgadmin/servers.json"
           ports:
             - name: http
               containerPort: 80
@@ -50,7 +50,7 @@ spec:
               memory: "512Mi"
           volumeMounts:
             - name: servers-config
-              mountPath: /pgadmin4
+              mountPath: /etc/pgadmin
               readOnly: true
       volumes:
         - name: servers-config
