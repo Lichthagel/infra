@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: shinobu-postgres
+  name: shinobu-authentik
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/postgres
+    path: apps/authentik
     targetRevision: HEAD
   destination:
     server: https://shinobu:6443
-    namespace: postgres
+    namespace: authentik
