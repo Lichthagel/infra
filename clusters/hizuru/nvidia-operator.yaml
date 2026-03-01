@@ -15,7 +15,7 @@ spec:
         - name: driver.enabled
           value: "false"
         - name: toolkit.enabled
-          value: "false"
+          value: "true"
         - name: cdi.enabled
           value: "true"
         - name: cdi.default
