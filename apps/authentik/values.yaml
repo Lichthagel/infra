@@ -6,16 +6,39 @@ authentik:
     error_reporting:
       enabled: false
     postgresql:
-      password: "ThisIsNotASecurePassword"
+      host: postgres.postgres.svc.cluster.local
+      port: 5432
+      name: authentik
+      user: authentik
+      password: file:///secrets/postgres/password
 
   server:
     ingress:
       enabled: false
-
-  postgresql:
-    enabled: true
-    auth:
-      password: "ThisIsNotASecurePassword"
+    volumes:
+      - name: postgresql
+        secret:
+          secretName: authentik-postgres
+          items:
+            - key: password
+              path: password
+    volumeMounts:
+      - name: postgresql
+        mountPath: /secrets/postgres
+        readOnly: true
+  
+  worker:
+    volumes:
+      - name: postgresql
+        secret:
+          secretName: authentik-postgres
+          items:
+            - key: password
+              path: password
+    volumeMounts:
+      - name: postgresql
+        mountPath: /secrets/postgres
+        readOnly: true
 
   global:
     env:
