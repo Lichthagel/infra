@@ -7,6 +7,7 @@ spec:
   secretName: authentik-tls
   dnsNames:
     - authentik.licht
+    - authentik.licht.moe
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer

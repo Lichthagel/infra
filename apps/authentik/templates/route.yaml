@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`authentik.licht`)
+      match: Host(`authentik.licht`) || Host(`authentik.licht.moe`)
       services:
         - name: authentik-server
           port: 80
