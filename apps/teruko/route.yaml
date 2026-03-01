@@ -12,7 +12,7 @@ spec:
       priority: 10
       middlewares:
         - name: authentik-forward-auth
-          namespace: traefik
+          namespace: authentik
       services:
         - name: teruko
           port: 3000
@@ -22,6 +22,5 @@ spec:
       services:
         - name: authentik-server
           namespace: authentik
-          port: 8000
   tls:
     secretName: teruko-tls
