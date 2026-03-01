@@ -9,6 +9,9 @@ spec:
   routes:
     - kind: Rule
       match: Host(`teruko.licht`)
+      middlewares:
+        - name: authentik-forward-auth
+          namespace: traefik
       services:
         - name: teruko
           port: 3000
