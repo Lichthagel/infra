@@ -1,6 +1,6 @@
 authentik:
   authentik:
-    secret_key: "PleaseGenerateASecureKey"
+    secret_key: "file:///secrets/secretkey/secret_key"
     # This sends anonymous usage-data, stack traces on errors and
     # performance data to sentry.io, and is fully opt-in
     error_reporting:
@@ -22,11 +22,20 @@ authentik:
           items:
             - key: password
               path: password
+      - name: secretkey
+        secret:
+          secretName: authentik-secretkey
+          items:
+            - key: secret_key
+              path: secret_key
     volumeMounts:
       - name: postgresql
         mountPath: /secrets/postgres
         readOnly: true
-  
+      - name: secretkey
+        mountPath: /secrets/secretkey
+        readOnly: true
+
   worker:
     volumes:
       - name: postgresql
@@ -35,9 +44,18 @@ authentik:
           items:
             - key: password
               path: password
+      - name: secretkey
+        secret:
+          secretName: authentik-secretkey
+          items:
+            - key: secret_key
+              path: secret_key
     volumeMounts:
       - name: postgresql
         mountPath: /secrets/postgres
+        readOnly: true
+      - name: secretkey
+        mountPath: /secrets/secretkey
         readOnly: true
 
   global:
