@@ -12,6 +12,9 @@ traefik:
         default: true
   service:
     type: "NodePort"
+  providers:
+    kubernetesCRD:
+      allowCrossNamespace: true
 
 nginx:
   passthrough: false
