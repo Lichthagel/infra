@@ -21,6 +21,7 @@ spec:
       priority: 15
       services:
         - name: authentik-server
+          namespace: authentik
           port: 8000
   tls:
     secretName: teruko-tls
