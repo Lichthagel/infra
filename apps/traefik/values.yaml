@@ -15,6 +15,3 @@ traefik:
   providers:
     kubernetesCRD:
       allowCrossNamespace: true
-
-nginx:
-  passthrough: false

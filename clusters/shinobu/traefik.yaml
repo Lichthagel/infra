@@ -11,15 +11,9 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-        - name: traefik.ports.web.nodePort
-          value: "30080"
-        - name: traefik.ports.websecure.nodePort
-          value: "30443"
         - name: traefik.providers.kubernetesCRD.allowExternalNameServices
           value: "true"
         - name: traefik.providers.kubernetesIngress.allowExternalNameServices
-          value: "true"
-        - name: nginx.passthrough
           value: "true"
   destination:
     server: https://shinobu:6443
