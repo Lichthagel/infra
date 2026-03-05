@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Chart.Name }}-argo-cd
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/argo-cd
+    targetRevision: HEAD
+    helm:
+      valuesObject:
+        argo-cd:
+          configs:
+            params:
+              server.insecure: true
+        hostnames:
+          - argocd.licht
+          - argocd.{{ .Chart.Name }}.licht
+  destination:
+    server: {{ .Values.cluster.address }}
+    namespace: argo-cd
