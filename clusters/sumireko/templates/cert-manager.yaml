@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Chart.Name }}-traefik
+  name: {{ .Chart.Name }}-cert-manager
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/traefik
+    path: apps/cert-manager
     targetRevision: HEAD
     helm:
       parameters:
-        - name: traefik.providers.kubernetesCRD.allowExternalNameServices
+        - name: caIssuer.enabled
           value: "true"
-        - name: traefik.providers.kubernetesIngress.allowExternalNameServices
+        - name: acmeIssuer.enabled
           value: "true"
   destination:
     server: {{ .Values.cluster.address }}
-    namespace: traefik
+    namespace: cert-manager
