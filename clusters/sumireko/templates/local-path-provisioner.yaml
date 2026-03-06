@@ -13,6 +13,8 @@ spec:
       valuesObject:
         storageClass:
           defaultClass: true
+        image:
+          repository: docker.io/rancher/local-path-provisioner:v0.0.34
   destination:
     server: {{ .Values.cluster.address }}
     namespace: local-path-storage
