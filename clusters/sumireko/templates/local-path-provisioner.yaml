@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Chart.Name }}-local-path-provisioner
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rancher/local-path-provisioner
+    path: deploy/chart/local-path-provisioner
+    targetRevision: v0.0.34
+    helm:
+      valuesObject:
+        storageClass:
+          defaultClass: true
+  destination:
+    server: {{ .Values.cluster.address }}
+    namespace: local-path-storage
