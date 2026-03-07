@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: authentik
+  name: hizuru-authentik-outpost
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/authentik
+    path: apps/authentik-outpost
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: authentik
+    namespace: authentik-outpost

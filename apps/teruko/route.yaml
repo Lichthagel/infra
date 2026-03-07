@@ -12,7 +12,7 @@ spec:
       priority: 10
       middlewares:
         - name: authentik-forward-auth
-          namespace: authentik
+          namespace: authentik-outpost
       services:
         - name: teruko
           port: 3000
@@ -20,8 +20,8 @@ spec:
       match: Host(`teruko.licht`) && PathPrefix(`/outpost.goauthentik.io/`)
       priority: 15
       services:
-        - name: authentik-server
-          namespace: authentik
-          port: 80
+        - name: authentik-outpost
+          namespace: authentik-outpost
+          port: 9000
   tls:
     secretName: teruko-tls
