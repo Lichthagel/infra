@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: hono
-          image: hono-shinobu:latest
+          image: registry.licht.moe/hono-shinobu:latest
           imagePullPolicy: Never
           env:
             - name: PUID
