@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hono
+  namespace: hono
+spec:
+  secretName: hono-tls
+  dnsNames:
+    - hono.gatzweiler.xyz
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer

@@ -5,10 +5,13 @@ metadata:
   namespace: hono
 spec:
   entryPoints:
-    - web
+    - websecure
   routes:
     - kind: Rule
       match: Host(`hono.gatzweiler.xyz`)
       services:
         - name: hono
           port: 8000
+  tls:
+    secretName: hono-tls
+
