@@ -13,8 +13,28 @@ spec:
       valuesObject:
         argo-cd:
           configs:
+            cm:
+              url: https://argocd.sumireko.licht
+              dex.config: |
+                connectors:
+                - config:
+                    issuer: https://authentik.licht.moe/application/o/argo-cd/
+                    clientID: Mra3HcjQQU0aMUvBXwwfSqg8LMLRXl7RGI2yJMGx
+                    clientSecret: $dex.authentik.clientSecret
+                    insecureEnableGroups: true
+                    scopes:
+                      - openid
+                      - profile
+                      - email
+                  name: authentik
+                  type: oidc
+                  id: authentik
             params:
               server.insecure: true
+            rbac:
+              policy.csv: |
+                g, ArgoCD Admins, role:admin
+                g, ArgoCD Viewers, role:readonly
         hostnames:
           - argocd.licht
           - argocd.{{ .Chart.Name }}.licht
