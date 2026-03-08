@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  secretName: {{ .Chart.Name }}-tls
+  dnsNames:
+    - {{ lower .Chart.Name }}.licht.moe
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer

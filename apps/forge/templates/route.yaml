@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{ lower .Chart.Name }}.licht.moe`)
+      services:
+        - name: {{ .Release.Name }}-forgejo-http
+          port: http
+  tls:
+    secretName: {{ .Chart.Name }}-tls
