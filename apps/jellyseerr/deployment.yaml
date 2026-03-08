@@ -1,33 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: jellyseerr
   labels:
-    app: jellyseerr
+    app: seerr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jellyseerr
+      app: seerr
   template:
     metadata:
       labels:
-        app: jellyseerr
+        app: seerr
     spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
-        - name: jellyseerr
-          image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+        - name: seerr
+          image: ghcr.io/seerr-team/seerr:v3.1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
               value: "Europe/Berlin"
           ports:
-            - name: jellyseerr
+            - name: seerr
               containerPort: 5055
               protocol: TCP
           volumeMounts:
-            - name: jellyseerr-config
+            - name: seerr-config
               mountPath: /app/config
           resources:
             requests:
@@ -36,7 +39,19 @@ spec:
             limits:
               cpu: "500m"
               memory: "1Gi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            privileged: false
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
       volumes:
-        - name: jellyseerr-config
+        - name: seerr-config
           persistentVolumeClaim:
             claimName: jellyseerr-config-pvc

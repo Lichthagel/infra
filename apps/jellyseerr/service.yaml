@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: jellyseerr
   labels:
-    app: jellyseerr
+    app: seerr
 spec:
   selector:
-    app: jellyseerr
+    app: seerr
   ports:
-    - name: jellyseerr
+    - name: seerr
       protocol: TCP
       port: 5055
-      targetPort: jellyseerr
+      targetPort: seerr
   type: ClusterIP

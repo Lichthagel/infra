@@ -1,16 +1,16 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: jellyseerr
 spec:
   entryPoints:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`jellyseerr.licht`)
+      match: Host(`seerr.licht`)
       services:
-        - name: jellyseerr
+        - name: seerr
           port: 5055
   tls:
-    secretName: jellyseerr-tls
+    secretName: seerr-tls

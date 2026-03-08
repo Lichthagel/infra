@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: jellyseerr
 spec:
-  secretName: jellyseerr-tls
+  secretName: seerr-tls
   dnsNames:
-    - jellyseerr.licht
+    - seerr.licht
   issuerRef:
     name: ca-issuer
     kind: ClusterIssuer
