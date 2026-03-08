@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-mta-sts-lichthagel
+  namespace: nginx
+spec:
+  secretName: nginx-mta-sts-lichthagel-tls
+  dnsNames:
+    - mta-sts.lichthagel.de
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-remove-www
+  namespace: nginx
+spec:
+  secretName: nginx-remove-www-tls
+  dnsNames:
+    - www.ttchetzerath.de
+  issuerRef:
+    name: acme-issuer
+    kind: ClusterIssuer

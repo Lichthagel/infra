@@ -1,0 +1,33 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-mta-sts-lichthagel
+  namespace: nginx
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`mta-sts.lichthagel.de`)
+      services:
+        - name: nginx
+          port: http
+  tls:
+    secretName: nginx-mta-sts-lichthagel-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-remove-www
+  namespace: nginx
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: HostRegexp(`^www\..+$`)
+      services:
+        - name: nginx
+          port: http
+  tls:
+    secretName: nginx-remove-www-tls
