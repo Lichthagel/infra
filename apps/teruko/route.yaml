@@ -11,6 +11,8 @@ spec:
       match: Host(`teruko.licht`)
       priority: 10
       middlewares:
+        - name: cors-headers
+          namespace: teruko
         - name: authentik-forward-auth
           namespace: authentik-outpost
       services:
@@ -19,6 +21,9 @@ spec:
     - kind: Rule
       match: Host(`teruko.licht`) && PathPrefix(`/outpost.goauthentik.io/`)
       priority: 15
+      middlewares:
+        - name: cors-headers
+          namespace: teruko
       services:
         - name: authentik-outpost
           namespace: authentik-outpost
