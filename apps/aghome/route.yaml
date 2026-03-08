@@ -8,7 +8,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`dns.licht.moe`)
+      match: HostRegexp(`^(.+\.)?dns\.licht\.moe$`)
       services:
         - name: aghome-web
           port: 3000
