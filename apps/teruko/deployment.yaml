@@ -18,7 +18,7 @@ spec:
       containers:
         - name: teruko
           image: registry.licht/teruko-svelte:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: PUID
               value: "1000"
