@@ -11,6 +11,10 @@ forgejo:
       server:
         DOMAIN: forge.licht.moe
         ROOT_URL: "https://forge.licht.moe/"
+        PER_WRITE_TIMEOUT: 120s
+        PER_WRITE_PER_KB_TIMEOUT: 30s
+        SSH_PER_WRITE_TIMEOUT: 120s
+        SSH_PER_WRITE_PER_KB_TIMEOUT: 30s
       service:
         DISABLE_REGISTRATION: true
         REQUIRE_SIGNIN_VIEW: true
