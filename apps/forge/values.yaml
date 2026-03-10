@@ -25,3 +25,5 @@ forgejo:
     additionalConfigSources:
       - secret:
           secretName: "forgejo-secret"
+    admin:
+      username: ""
