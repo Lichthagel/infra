@@ -9,10 +9,10 @@ spec:
   selector:
     app: aghome
   ports:
-  - name: http
-    port: 3000
-    targetPort: 3000
-    protocol: TCP
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
   type: ClusterIP
 ---
 apiVersion: v1
@@ -26,14 +26,32 @@ spec:
   selector:
     app: aghome
   ports:
-  - name: dns-over-tls
-    port: 853
-    targetPort: 853
-    nodePort: 853
-    protocol: TCP
-  - name: dns-over-quic
-    port: 853
-    targetPort: 853
-    nodePort: 853
-    protocol: UDP
+    - name: dns-over-tls
+      port: 853
+      targetPort: 853
+      nodePort: 853
+      protocol: TCP
+    - name: dns-over-quic
+      port: 853
+      targetPort: 853
+      nodePort: 853
+      protocol: UDP
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aghome-dns
+  namespace: aghome
+  labels:
+    app: aghome
+spec:
+  selector:
+    app: aghome
+  ports:
+    - name: dns
+      port: 53
+      targetPort: 53
+      nodePort: 53
+      protocol: UDP
   type: NodePort
