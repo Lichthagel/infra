@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntfy
+  labels:
+    app: ntfy
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ntfy
+  template:
+    metadata:
+      labels:
+        app: ntfy
+    spec:
+      containers:
+        - name: ntfy
+          image: docker.io/binwiederhier/ntfy:v2.19.2
+          args: ["serve"]
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: NTFY_DEBUG
+              value: "false"
+            - name: NTFY_LOG_LEVEL
+              value: INFO
+            - name: NTFY_BASE_URL
+              value: https://ntfy.licht.moe
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            limits:
+              memory: 300Mi
+              cpu: 200m
+            requests:
+              cpu: 150m
+              memory: 150Mi
+          volumeMounts:
+            - mountPath: /etc/ntfy
+              name: config-secret
+              readOnly: true
+            - mountPath: /var/cache/ntfy
+              name: cache-volume
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: ntfy
+        - name: config-secret
+          secret:
+            secretName: ntfy-config
