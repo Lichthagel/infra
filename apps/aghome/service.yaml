@@ -37,21 +37,3 @@ spec:
       nodePort: 853
       protocol: UDP
   type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: aghome-dns
-  namespace: aghome
-  labels:
-    app: aghome
-spec:
-  selector:
-    app: aghome
-  ports:
-    - name: dns
-      port: 53
-      targetPort: 53
-      nodePort: 53
-      protocol: UDP
-  type: NodePort
