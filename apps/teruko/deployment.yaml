@@ -19,6 +19,9 @@ spec:
         - name: teruko
           image: forge.licht.moe/licht/teruko-svelte:latest
           imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: teruko-secret
           env:
             - name: PUID
               value: "1000"
@@ -26,8 +29,6 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Berlin"
-            - name: DATABASE_URL
-              value: "file:/data/teruko.db"
             - name: IMG_FOLDER
               value: "/data/teruko"
             - name: BODY_SIZE_LIMIT
