@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: teruko
-          image: registry.licht/teruko-svelte:latest
-          imagePullPolicy: IfNotPresent
+          image: forge.licht.moe/licht/teruko-svelte:latest
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "1000"
@@ -52,3 +52,5 @@ spec:
           hostPath:
             path: /mnt/data/teruko
             type: Directory
+      imagePullSecrets:
+        - name: regcred
