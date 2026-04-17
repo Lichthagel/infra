@@ -1,6 +1,6 @@
 dependencies:
 - name: forgejo
   repository: oci://code.forgejo.org/forgejo-helm
-  version: 16.2.2
-digest: sha256:66841969618306c0cadb723caefd08ed2e8e1b401243be4035b38c2a36902bce
-generated: "2026-04-10T22:01:40.202821911Z"
+  version: 17.0.0
+digest: sha256:7a58b781223e60b16fe0895bf6dd7cd0bc003da02f5be1d40472b0cb2c68df67
+generated: "2026-04-17T21:50:33.226099674Z"
