@@ -21,4 +21,4 @@ spec:
         - name: cdi.default
           value: "true"
     repoURL: https://helm.ngc.nvidia.com/nvidia
-    targetRevision: v26.3.0
+    targetRevision: v26.3.1
