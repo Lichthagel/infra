@@ -14,7 +14,8 @@ traefik:
       expose:
         default: true
   service:
-    type: "NodePort"
+    spec:
+      type: "NodePort"
   providers:
     kubernetesCRD:
       allowCrossNamespace: true
