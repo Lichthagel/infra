@@ -1,0 +1,8 @@
+# Patterns to ignore from being packaged
+.changes/
+.changesrc.json
+.github/
+.vscode/
+.helm/
+*.tgz
+*.tar.gz

@@ -1,0 +1,57 @@
+renovate:
+  cronjob:
+    schedule: "0 4,16 * * *"
+    timeZone: "Europe/Berlin"
+    concurrencyPolicy: "Allow"
+    failedJobsHistoryLimit: 3
+    successfulJobsHistoryLimit: 3
+    jobRestartPolicy: "Never"
+    ttlSecondsAfterFinished: 3600
+
+  image:
+    registry: ghcr.io
+    repository: renovatebot/renovate
+    tag: "43.173.0"
+    pullPolicy: "IfNotPresent"
+
+  config: |
+    {
+      "platform": "github",
+      "endpoint": "https://api.github.com",
+      "autodiscover": false,
+      "repositories": [],
+      "gitAuthor": "Renovate Bot <renovate@renovate.invalid>",
+      "rebaseWhen": "conflicted",
+      "timezone": "Europe/Berlin"
+    }
+  configEnableHelmTpl: false
+  configIsSecret: true
+  secretRef:
+    RENOVATE_TOKEN: "sumireko-renovate-secret"
+
+  persistence:
+    cache:
+      enabled: true
+      storageClass: "local-path"
+      storageSize: "1Gi"
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  serviceAccount:
+    create: true
+
+global:
+  commonLabels: {}
+  compatibility:
+    openshift:
+      adaptSecurityContext: "disabled"
+
+nameOverride: ""
+fullnameOverride: ""
+secretAnnotations: {}

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: renovate
+description: Universal dependency update tool that fits into your workflows.
+version: 0.1.0
+appVersion: "43.173.0"
+
+dependencies:
+  - name: renovate
+    version: "46.148.0"
+    repository: oci://ghcr.io/renovatebot/charts

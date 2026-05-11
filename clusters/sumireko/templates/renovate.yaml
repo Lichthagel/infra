@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Chart.Name }}-renovate
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Lichthagel/infra
+    path: apps/renovate
+    targetRevision: HEAD
+  destination:
+    server: {{ .Values.cluster.address }}
+    namespace: renovate
