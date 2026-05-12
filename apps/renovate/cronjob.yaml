@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+  namespace: renovate
+  labels:
+    app: renovate
+spec:
+  schedule: "0 4,16 * * *"
+  timeZone: "Europe/Berlin"
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 3600
+      activeDeadlineSeconds: 6300
+      template:
+        metadata:
+          labels:
+            app: renovate
+        spec:
+          serviceAccountName: renovate
+          restartPolicy: Never
+          containers:
+            - name: renovate
+              image: ghcr.io/renovatebot/renovate:43.173.6
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: RENOVATE_CONFIG_FILE
+                  value: /usr/src/app/config.json
+                - name: TZ
+                  value: "Europe/Berlin"
+                - name: LOG_LEVEL
+                  value: debug
+              envFrom:
+                - secretRef:
+                    name: sumireko-renovate-secret
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                limits:
+                  cpu: 500m
+                  memory: 1Gi
+              volumeMounts:
+                - name: config
+                  mountPath: /usr/src/app/config.json
+                  subPath: config.json
+                - name: cache
+                  mountPath: /tmp/renovate
+          volumes:
+            - name: config
+              configMap:
+                name: renovate-config
+            - name: cache
+              persistentVolumeClaim:
+                claimName: renovate-cache
+          securityContext:
+            fsGroup: 1000
+          terminationGracePeriodSeconds: 6300

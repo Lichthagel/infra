@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/renovate
     targetRevision: HEAD
+    path: apps/renovate
   destination:
     server: {{ .Values.cluster.address }}
     namespace: renovate
