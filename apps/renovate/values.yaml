@@ -11,7 +11,7 @@ renovate:
   image:
     registry: ghcr.io
     repository: renovatebot/renovate
-    tag: "43.173.0"
+    tag: "43.173.6"
     pullPolicy: "IfNotPresent"
 
   config: |
