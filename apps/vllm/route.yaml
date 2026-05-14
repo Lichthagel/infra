@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vllm
+  namespace: vllm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`vllm.licht`)
+      services:
+        - name: vllm
+          port: http
+  tls:
+    secretName: vllm-tls

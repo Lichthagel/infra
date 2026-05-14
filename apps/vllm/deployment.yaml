@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: vllm
+  labels:
+    app: vllm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm
+  template:
+    metadata:
+      labels:
+        app: vllm
+    spec:
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:v0.9.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: VLLM_ALLOW_RUNTIME_MODEL_OVERRIDE
+              value: "1"
+          command:
+            - python3
+            - -m
+            - vllm.entrypoints.openai.api_server
+            - --model
+            - /models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf
+            - --served-model-name
+            - Qwen3.6-35B-A3B-Q4_K_M
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "1"
+              memory: "4Gi"
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "4"
+              memory: "6Gi"
+              nvidia.com/gpu: "1"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      runtimeClassName: nvidia
+      nodeSelector:
+        kubernetes.io/hostname: hizuru
+      volumes:
+        - name: models
+          hostPath:
+            path: /mnt/data/models
+            type: DirectoryOrCreate

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vllm
+  namespace: vllm
+spec:
+  secretName: vllm-tls
+  dnsNames:
+    - vllm.licht
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
