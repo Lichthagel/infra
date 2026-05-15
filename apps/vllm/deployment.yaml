@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: vllm
-          image: vllm/vllm-openai:v0.9.1
+          image: vllm/vllm-openai:v0.21.0
           imagePullPolicy: IfNotPresent
           env:
             - name: VLLM_ALLOW_RUNTIME_MODEL_OVERRIDE
