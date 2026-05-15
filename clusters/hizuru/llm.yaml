@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vllm
+  name: llm
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/vllm
+    path: apps/llm
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: vllm
+    namespace: llm

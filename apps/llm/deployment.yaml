@@ -1,38 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm
-  namespace: vllm
+  name: llm
+  namespace: llm
   labels:
-    app: vllm
+    app: llm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vllm
+      app: llm
   template:
     metadata:
       labels:
-        app: vllm
+        app: llm
     spec:
       containers:
-        - name: vllm
-          image: vllm/vllm-openai:v0.9.1
+        - name: llm
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda
           imagePullPolicy: IfNotPresent
-          env:
-            - name: VLLM_ALLOW_RUNTIME_MODEL_OVERRIDE
-              value: "1"
-          command:
-            - python3
+          args:
             - -m
-            - vllm.entrypoints.openai.api_server
-            - --model
             - /models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf
-            - --served-model-name
-            - Qwen3.6-35B-A3B-Q4_K_M
+            - --port
+            - "8080"
+            - --host
+            - "0.0.0.0"
+            - -c
+            - "262144"
+            - --n-gpu-layers
+            - "-1"
+            - --embedding
+          env:
+            - name: LLAMA_HTTP_CORS_ORIGIN
+              value: "*"
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: 8080
               protocol: TCP
           resources:
             requests:
@@ -40,8 +44,8 @@ spec:
               memory: "4Gi"
               nvidia.com/gpu: "1"
             limits:
-              cpu: "4"
-              memory: "6Gi"
+              cpu: "12"
+              memory: "16Gi"
               nvidia.com/gpu: "1"
           livenessProbe:
             httpGet:
@@ -62,6 +66,8 @@ spec:
           volumeMounts:
             - name: models
               mountPath: /models
+          securityContext:
+            runAsUser: 0
       runtimeClassName: nvidia
       nodeSelector:
         kubernetes.io/hostname: hizuru
