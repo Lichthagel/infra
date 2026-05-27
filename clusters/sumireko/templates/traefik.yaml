@@ -15,6 +15,10 @@ spec:
           value: "true"
         - name: traefik.providers.kubernetesIngress.allowExternalNameServices
           value: "true"
+        - name: traefik.ports.web.nodePort
+          value: "8080"
+        - name: traefik.ports.websecure.nodePort
+          value: "8443"
   destination:
     server: {{ .Values.cluster.address }}
     namespace: traefik
