@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hizuru-cilium
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: oci://quay.io/cilium/charts/cilium
+    path: .
+    targetRevision: 1.19.4
+    helm:
+      valuesObject:
+        cluster:
+          name: hizuru
+        ipv4:
+          enabled: true
+        ipv6:
+          enabled: true
+        ipv6NativeRoutingCIDR: 2001:db8:42:0::/56
+        operator:
+          replicas: 1
+        ipam:
+          mode: kubernetes
+          operator:
+            clusterPoolIPv4PodCIDRList: "10.244.0.0/16"
+            clusterPoolIPv6PodCIDRList: "10.96.0.0/12"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
