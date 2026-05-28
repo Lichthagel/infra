@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Chart.Name }}-cilium
+  namespace: argo-cd
+spec:
+  project: default
+  source:
+    repoURL: oci://quay.io/cilium/charts/cilium
+    path: .
+    targetRevision: 1.19.4
+  destination:
+    server: {{ .Values.cluster.address }}
+    namespace: kube-system
