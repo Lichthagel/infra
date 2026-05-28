@@ -9,6 +9,13 @@ spec:
     repoURL: https://github.com/Lichthagel/infra
     targetRevision: HEAD
     path: apps/renovate
+    directory:
+      exclude: configmap.yaml
   destination:
     server: {{ .Values.cluster.address }}
     namespace: renovate
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+      enabled: true
