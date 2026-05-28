@@ -9,6 +9,18 @@ spec:
     repoURL: oci://quay.io/cilium/charts/cilium
     path: .
     targetRevision: 1.19.4
+    helm:
+      valuesObject:
+        ipv4:
+          enabled: true
+        ipv6:
+          enabled: true
+        operator:
+          replicas: 1
+        ipam:
+          operator:
+            clusterPoolIPv4PodCIDRList: "10.244.0.0/16"
+            clusterPoolIPv6PodCIDRList: "10.96.0.0/12"
   destination:
     server: {{ .Values.cluster.address }}
     namespace: kube-system
