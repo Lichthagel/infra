@@ -16,6 +16,7 @@ traefik:
   service:
     spec:
       type: "NodePort"
+      ipFamilyPolicy: PreferDualStack
   providers:
     kubernetesCRD:
       allowCrossNamespace: true

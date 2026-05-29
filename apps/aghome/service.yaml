@@ -25,6 +25,7 @@ metadata:
 spec:
   selector:
     app: aghome
+  ipFamilyPolicy: PreferDualStack
   ports:
     - name: dns-over-tls
       port: 853
