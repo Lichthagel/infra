@@ -24,7 +24,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: renovate
-              image: ghcr.io/renovatebot/renovate:43.212.4
+              image: ghcr.io/renovatebot/renovate:43.213.0
               imagePullPolicy: IfNotPresent
               env:
                 - name: RENOVATE_CONFIG_FILE
