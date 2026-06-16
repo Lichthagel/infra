@@ -48,7 +48,7 @@ spec:
               value: 8080,6789,9696,8989,7878,8686,6767
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:5.2.1
+          image: lscr.io/linuxserver/qbittorrent:5.2.2
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
