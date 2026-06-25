@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ntfy
-          image: docker.io/binwiederhier/ntfy:v2.24.0
+          image: docker.io/binwiederhier/ntfy:v2.25.0
           args: ["serve"]
           env:
             - name: TZ
