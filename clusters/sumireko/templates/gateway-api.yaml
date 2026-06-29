@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/kubernetes-sigs/gateway-api
     path: config/crd/standard
-    targetRevision: v1.5.1
+    targetRevision: v1.6.0
   destination:
     server: {{ .Values.cluster.address }}
     namespace: kube-system
