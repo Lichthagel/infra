@@ -216,7 +216,7 @@ spec:
               cpu: "500m"
               memory: "1Gi"
         - name: bazarr
-          image: lscr.io/linuxserver/bazarr:1.5.6
+          image: lscr.io/linuxserver/bazarr:1.6.0
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
