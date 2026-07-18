@@ -1,14 +1,15 @@
+{{- range $name, $instance := .Values.instances }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: renovate
+  name: {{ $name }}
   namespace: renovate
   labels:
     app: renovate
 spec:
-  schedule: "0 0,8,12,16,20 * * *"
-  timeZone: "Europe/Berlin"
-  concurrencyPolicy: Allow
+  schedule: {{ $instance.schedule | quote }}
+  timeZone: {{ default "Europe/Berlin" $instance.timeZone | quote }}
+  concurrencyPolicy: "Allow"
   failedJobsHistoryLimit: 3
   successfulJobsHistoryLimit: 3
   jobTemplate:
@@ -30,12 +31,12 @@ spec:
                 - name: RENOVATE_CONFIG_FILE
                   value: /usr/src/app/config.json
                 - name: TZ
-                  value: "Europe/Berlin"
+                  value: {{ default "Europe/Berlin" $instance.timeZone | quote }}
                 - name: LOG_LEVEL
-                  value: debug
+                  value: {{ default "info" $instance.logLevel }}
               envFrom:
                 - secretRef:
-                    name: sumireko-renovate-secret
+                    name: {{ default (printf "%s-renovate-secret" $name) $instance.secretRef }}
               volumeMounts:
                 - name: config
                   mountPath: /usr/src/app/config.json
@@ -45,10 +46,12 @@ spec:
           volumes:
             - name: config
               configMap:
-                name: renovate-config
+                name: {{ $name }}-config
             - name: cache
               persistentVolumeClaim:
-                claimName: renovate-cache
+                claimName: {{ $name }}-cache
           securityContext:
             fsGroup: 1000
           terminationGracePeriodSeconds: 6300
+---
+{{- end }}

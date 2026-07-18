@@ -1,0 +1,3 @@
+# Per-instance Renovate CronJob configuration.
+# Each key creates a separate CronJob with its own config and schedule.
+instances: {}

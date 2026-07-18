@@ -1,7 +1,8 @@
+{{- range $name, $instance := .Values.instances }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: renovate-cache
+  name: {{ $name }}-cache
   namespace: renovate
 spec:
   accessModes:
@@ -10,3 +11,5 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+{{- end }}

@@ -1,0 +1,11 @@
+{{- range $name, $instance := .Values.instances }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-config
+  namespace: renovate
+data:
+  config.json: |
+{{ $instance.configJson | indent 4 }}
+---
+{{- end }}
