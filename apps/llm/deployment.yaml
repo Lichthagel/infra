@@ -5,6 +5,8 @@ metadata:
   namespace: llm
   labels:
     app: llm
+strategy:
+  type: Recreate
 spec:
   selector:
     matchLabels:
