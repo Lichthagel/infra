@@ -14,7 +14,8 @@ spec:
         instances:
           github:
             schedule: "0 0,8,12,16,20 * * *"
-            timeZone: Europe/Berlin
+          gitlab:
+            schedule: "0 0 * * 0"
   destination:
     server: {{ .Values.cluster.address }}
     namespace: renovate
