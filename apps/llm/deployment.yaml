@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - -m
-            - /models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf
+            - /models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf
             - --port
             - "8080"
             - --host
@@ -30,6 +30,14 @@ spec:
             - --n-gpu-layers
             - "-1"
             - --embedding
+            - --jinja
+            - --no-mmap
+            - --mmproj 
+            - /models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/mmproj-F32.gguf
+            - --spec-type
+            - draft-mtp
+            - --spec-draft-n-max
+            - "2"
           env:
             - name: LLAMA_HTTP_CORS_ORIGIN
               value: "*"
