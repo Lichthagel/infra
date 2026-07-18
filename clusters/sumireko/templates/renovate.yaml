@@ -12,19 +12,9 @@ spec:
     helm:
       valuesObject:
         instances:
-          sumireko:
+          github:
             schedule: "0 0,8,12,16,20 * * *"
             timeZone: Europe/Berlin
-            configJson: |
-              {
-                "platform": "github",
-                "endpoint": "https://api.github.com",
-                "autodiscover": false,
-                "repositories": [],
-                "gitAuthor": "Renovate Bot <renovate@renovate.invalid>",
-                "rebaseWhen": "conflicted",
-                "timezone": "Europe/Berlin"
-              }
             secretRef: sumireko-renovate-secret
   destination:
     server: {{ .Values.cluster.address }}

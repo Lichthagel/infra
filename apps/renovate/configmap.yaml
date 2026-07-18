@@ -1,0 +1,18 @@
+# Reference Renovate configuration — not deployed by Helm.
+# Each instance's actual ConfigMap is generated from .Values.instances.<name>.configJson.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: renovate-config-reference
+  namespace: renovate
+data:
+  config.json: |
+    {
+      "platform": "github",
+      "endpoint": "https://api.github.com",
+      "autodiscover": false,
+      "repositories": [],
+      "gitAuthor": "Renovate Bot <renovate@renovate.invalid>",
+      "rebaseWhen": "conflicted",
+      "timezone": "Europe/Berlin"
+    }

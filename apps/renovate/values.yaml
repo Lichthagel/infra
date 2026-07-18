@@ -1,3 +1,4 @@
 # Per-instance Renovate CronJob configuration.
-# Each key creates a separate CronJob with its own config and schedule.
+# Each key creates a separate CronJob with its own schedule and secret.
+# ConfigMaps are created manually (name: <instance>-config).
 instances: {}

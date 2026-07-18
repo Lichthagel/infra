@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $name }}-cache
+  name: renovate-{{ $name }}-cache
   namespace: renovate
 spec:
   accessModes:
