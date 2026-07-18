@@ -36,7 +36,7 @@ spec:
                   value: {{ default "info" $instance.logLevel }}
               envFrom:
                 - secretRef:
-                    name: {{ default (printf "%s-renovate-secret" $name) $instance.secretRef }}
+                    name: renovate-{{ $name }}-secret
               volumeMounts:
                 - name: config
                   mountPath: /usr/src/app/config.json
