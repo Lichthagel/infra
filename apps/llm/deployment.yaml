@@ -31,7 +31,6 @@ spec:
             - "262144"
             - --n-gpu-layers
             - "-1"
-            - --embedding
             - --jinja
             - --no-mmap
             - --mmproj 
