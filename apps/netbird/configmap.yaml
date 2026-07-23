@@ -5,20 +5,15 @@ metadata:
   namespace: netbird
 data:
   config.yaml: |
-    Management:
-      Store:
-        Type: postgres
-        PostgreSQL:
-          Host: postgres.postgres.svc.cluster.local
-          Port: 5432
-          Database: netbird
-          Username: netbird
-          Password: ${NB_POSTGRES_PASSWORD}
-      Port: 80
-    STUN:
-      Port: 3478
-    Log:
-      Level: info
-      DirPerms: 0700
-      FilePerms: 0600
-    ControlDNS: true
+    server:
+      listenAddress: ":80"
+      exposedAddress: "https://netbird.licht.moe"
+      stunPorts:
+        - 3478
+      dataDir: /var/lib/netbird
+      store:
+        engine: "postgres"
+      authStore:
+        engine: "postgres"
+      activityStore:
+        engine: "postgres"

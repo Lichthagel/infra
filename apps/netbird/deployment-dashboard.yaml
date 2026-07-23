@@ -16,6 +16,9 @@ spec:
       containers:
         - name: dashboard
           image: docker.io/netbirdio/dashboard:v2.90.7
+          envFrom:
+            - configMapRef:
+                name: netbird-dashboard
           ports:
             - name: http
               containerPort: 80
