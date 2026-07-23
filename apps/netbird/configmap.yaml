@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: netbird-config
+  namespace: netbird
+data:
+  config.yaml: |
+    Management:
+      Store:
+        Type: postgres
+        PostgreSQL:
+          Host: postgres.postgres.svc.cluster.local
+          Port: 5432
+          Database: netbird
+          Username: netbird
+          Password: ${NB_POSTGRES_PASSWORD}
+      Port: 80
+    STUN:
+      Port: 3478
+    Log:
+      Level: info
+      DirPerms: 0700
+      FilePerms: 0600
+    ControlDNS: true

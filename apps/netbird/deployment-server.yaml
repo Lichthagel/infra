@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbird-server
+  namespace: netbird
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netbird-server
+  template:
+    metadata:
+      labels:
+        app: netbird-server
+    spec:
+      containers:
+        - name: netbird-server
+          image: docker.io/netbirdio/netbird-server:0.75.0
+          args:
+            - --config
+            - /etc/netbird/config.yaml
+          env:
+            - name: NB_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: netbird-postgres
+                  key: password
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: stun
+              containerPort: 3478
+              hostPort: 3478
+              protocol: UDP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/netbird/config.yaml
+              subPath: config.yaml
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /api/ping
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /api/ping
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 30
+      volumes:
+        - name: config
+          configMap:
+            name: netbird-config
