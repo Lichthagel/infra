@@ -1,0 +1,34 @@
+litellm-helm:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/berriai/litellm-database
+    pullPolicy: IfNotPresent
+    tag: "v1.93.0"
+
+  masterkeySecretName: litellm-masterkey
+  masterkeySecretKey: masterkey
+
+  db:
+    useExisting: true
+    deployStandalone: false
+    endpoint: postgres.postgres.svc.cluster.local
+    database: litellm
+    secret:
+      name: litellm-db
+      usernameKey: username
+      passwordKey: password
+
+  redis:
+    enabled: false
+
+  environmentSecrets:
+    - litellm-env
+
+  proxy_config:
+    model_list: []
+    general_settings:
+      store_model_in_db: true
+    router_settings:
+      redis_host: "valkey.valkey.svc.cluster.local"
+      redis_port: 6379
+      redis_password: os.environ/REDIS_PASSWORD

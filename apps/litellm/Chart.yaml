@@ -1,0 +1,10 @@
+apiVersion: v2
+name: litellm
+description: LiteLLM AI Gateway - a unified interface for 100+ LLM providers
+type: application
+version: 0.1.0
+appVersion: "1.93.0"
+dependencies:
+  - name: litellm-helm
+    version: 1.93.0
+    repository: oci://ghcr.io/berriai
