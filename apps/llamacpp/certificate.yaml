@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: llm
-  namespace: llm
+  name: llamacpp
+  namespace: llamacpp
 spec:
-  secretName: llm-tls
+  secretName: llamacpp-tls
   dnsNames:
     - llm.licht
   issuerRef:

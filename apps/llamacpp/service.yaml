@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: llm
-  namespace: llm
+  name: llamacpp
+  namespace: llamacpp
   labels:
-    app: llm
+    app: llamacpp
 spec:
   selector:
-    app: llm
+    app: llamacpp
   ports:
     - name: http
       protocol: TCP

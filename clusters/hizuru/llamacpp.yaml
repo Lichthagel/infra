@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: llm
+  name: llamacpp
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/Lichthagel/infra
-    path: apps/llm
+    path: apps/llamacpp
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: llm
+    namespace: llamacpp

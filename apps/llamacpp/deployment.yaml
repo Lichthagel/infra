@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llm
-  namespace: llm
+  name: llamacpp
+  namespace: llamacpp
   labels:
-    app: llm
+    app: llamacpp
 strategy:
   type: Recreate
 spec:
   selector:
     matchLabels:
-      app: llm
+      app: llamacpp
   template:
     metadata:
       labels:
-        app: llm
+        app: llamacpp
     spec:
       containers:
-        - name: llm
+        - name: llamacpp
           image: ghcr.io/ggml-org/llama.cpp:server-cuda
           imagePullPolicy: IfNotPresent
           args:
@@ -33,7 +33,7 @@ spec:
             - "-1"
             - --jinja
             - --no-mmap
-            - --mmproj 
+            - --mmproj
             - /models/unsloth/Qwen3.6-35B-A3B-MTP-GGUF/mmproj-F32.gguf
             - --spec-type
             - draft-mtp
