@@ -37,15 +37,13 @@ spec:
             - name: data
               mountPath: /var/lib/netbird
           readinessProbe:
-            httpGet:
-              path: /api/ping
-              port: 80
+            tcpSocket:
+              port: http
             initialDelaySeconds: 10
             periodSeconds: 15
           livenessProbe:
-            httpGet:
-              path: /api/ping
-              port: 80
+            tcpSocket:
+              port: http
             initialDelaySeconds: 15
             periodSeconds: 30
       volumes:
