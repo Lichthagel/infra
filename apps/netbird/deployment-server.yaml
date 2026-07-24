@@ -19,22 +19,6 @@ spec:
           args:
             - --config
             - /etc/netbird/config.yaml
-          env:
-            - name: NETBIRD_STORE_ENGINE_POSTGRES_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: netbird-postgres
-                  key: dsn
-            - name: NETBIRD_AUTH_STORE_ENGINE_POSTGRES_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: netbird-postgres
-                  key: dsn_idp
-            - name: NETBIRD_ACTIVITY_STORE_ENGINE_POSTGRES_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: netbird-postgres
-                  key: dsn_activity
           ports:
             - name: http
               containerPort: 80
@@ -62,5 +46,5 @@ spec:
             periodSeconds: 30
       volumes:
         - name: config
-          configMap:
-            name: netbird-config
+          secret:
+            secretName: netbird-config
