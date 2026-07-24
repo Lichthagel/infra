@@ -23,9 +23,17 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/netbird
+              readOnly: true
           readinessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: netbird-data

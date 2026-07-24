@@ -34,6 +34,8 @@ spec:
               mountPath: /etc/netbird/config.yaml
               subPath: config.yaml
               readOnly: true
+            - name: data
+              mountPath: /var/lib/netbird
           readinessProbe:
             httpGet:
               path: /api/ping
@@ -50,3 +52,6 @@ spec:
         - name: config
           secret:
             secretName: netbird-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: netbird-data
