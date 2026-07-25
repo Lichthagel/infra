@@ -1,6 +1,6 @@
 dependencies:
 - name: homarr
   repository: oci://ghcr.io/homarr-labs/charts
-  version: 8.23.0
-digest: sha256:5256e3472a02f605c0a12e94b19950dd94014a0bfc2e5409cda09de8200f8f22
-generated: "2026-07-17T21:41:51.711469914Z"
+  version: 8.24.0
+digest: sha256:a488e6eb68710ab88af247720978caf0ccf2bc06450228fbfe7df62a693dc881
+generated: "2026-07-25T01:47:41.539271967Z"
