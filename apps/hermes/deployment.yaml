@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes
+  namespace: hermes
+  labels:
+    app: hermes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hermes
+  template:
+    metadata:
+      labels:
+        app: hermes
+    spec:
+      containers:
+        - name: hermes
+          image: docker.io/nousresearch/hermes-agent:v2026.8.13
+          imagePullPolicy: IfNotPresent
+          command: ["/opt/hermes/docker/entrypoint-dispatch.sh", "gateway", "run"]
+          env:
+            - name: HERMES_DASHBOARD
+              value: "1"
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2375"
+          envFrom:
+            - secretRef:
+                name: hermes-secrets
+          ports:
+            - name: dashboard
+              containerPort: 9119
+              protocol: TCP
+          volumeMounts:
+            - name: hermes-data
+              mountPath: /opt/data
+            - name: shm
+              mountPath: /dev/shm
+          livenessProbe:
+            tcpSocket:
+              port: dashboard
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            tcpSocket:
+              port: dashboard
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+        - name: dind
+          image: docker.io/library/docker:27-dind
+          command: ["dockerd", "--host=tcp://0.0.0.0:2375", "--iptables=false"]
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: dind-storage
+              mountPath: /var/lib/docker
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "6Gi"
+      volumes:
+        - name: hermes-data
+          persistentVolumeClaim:
+            claimName: hermes
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+        - name: dind-storage
+          emptyDir: {}
