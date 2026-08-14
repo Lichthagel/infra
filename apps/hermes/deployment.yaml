@@ -57,7 +57,7 @@ spec:
               cpu: "2"
               memory: "4Gi"
         - name: dind
-          image: docker.io/library/docker:27-dind
+          image: docker.io/library/docker:29-dind
           command: ["dockerd", "--host=tcp://0.0.0.0:2375", "--iptables=false"]
           env:
             - name: DOCKER_TLS_CERTDIR
