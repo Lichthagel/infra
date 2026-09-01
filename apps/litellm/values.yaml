@@ -3,7 +3,7 @@ litellm-helm:
   image:
     repository: ghcr.io/berriai/litellm-database
     pullPolicy: IfNotPresent
-    tag: "v1.98.0"
+    tag: "v1.99.0"
 
   masterkeySecretName: litellm-masterkey
   masterkeySecretKey: masterkey
