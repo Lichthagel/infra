@@ -62,3 +62,5 @@ authentik:
     env:
       - name: AUTHENTIK_LISTEN__TRUSTED_PROXY_CIDRS
         value: 10.96.0.0/12
+      - name: AUTHENTIK_WEB__BASE_URL
+        value: https://authentik.licht.moe
