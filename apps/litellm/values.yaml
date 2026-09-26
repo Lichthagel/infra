@@ -28,6 +28,7 @@ litellm-helm:
     model_list: []
     general_settings:
       store_model_in_db: true
+      disable_env_credential_login: true
     router_settings:
       redis_host: "valkey.valkey.svc.cluster.local"
       redis_port: 6379
