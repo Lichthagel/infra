@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: litellm
+  namespace: litellm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`llm.licht.moe`)
+      services:
+        - name: sumireko-litellm
+          port: 4000
+  tls:
+    secretName: litellm-tls
