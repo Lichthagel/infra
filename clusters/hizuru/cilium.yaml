@@ -25,7 +25,7 @@ spec:
           mode: kubernetes
           operator:
             clusterPoolIPv4PodCIDRList: 10.244.0.0/16
-            clusterPoolIPv6PodCIDRList: 10.96.0.0/12
+            clusterPoolIPv6PodCIDRList: 2001:db8:42:0::/56
         ipv4:
           enabled: true
         ipv6:
