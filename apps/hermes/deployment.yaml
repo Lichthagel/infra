@@ -58,7 +58,7 @@ spec:
               memory: "4Gi"
         - name: dind
           image: docker.io/library/docker:29-dind
-          command: ["dockerd", "--host=tcp://0.0.0.0:2375", "--iptables=false"]
+          command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
           env:
             - name: DOCKER_TLS_CERTDIR
               value: ""
