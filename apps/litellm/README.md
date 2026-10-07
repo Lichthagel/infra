@@ -11,7 +11,7 @@ subdirectory. Configure its documented token-directory environment variable
 through `litellm-helm.envVars`; only providers that support file-based credentials
 and a configurable path can use this arrangement.
 
-The claim uses 1 GiB with `ReadWriteOnce` access and the cluster default storage class. Keep its fixed name aligned with `litellm-helm.volumes`. The mount path and provider paths use the upstream chart values.
+The claim uses 10 MiB with `ReadWriteOnce` access and the cluster default storage class. Keep its fixed name aligned with `litellm-helm.volumes`. The mount path and provider paths use the upstream chart values.
 
 The current deployment uses one replica and the cluster's default local-path
 storage. Recreate prevents old and new proxy pods from overlapping during an
