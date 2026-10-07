@@ -11,10 +11,7 @@ subdirectory. Configure its documented token-directory environment variable
 through `litellm-helm.envVars`; only providers that support file-based credentials
 and a configurable path can use this arrangement.
 
-`providerAuthStorage` controls capacity, access modes, and storage class.
-An empty storageClassName uses the cluster default; "-" selects no storage class.
-Keep the claim name aligned with `litellm-helm.volumes` if you rename it.
-The mount path and provider paths are ordinary upstream chart values.
+The claim uses 1 GiB with `ReadWriteOnce` access and the cluster default storage class. Keep its fixed name aligned with `litellm-helm.volumes`. The mount path and provider paths use the upstream chart values.
 
 The current deployment uses one replica and the cluster's default local-path
 storage. Recreate prevents old and new proxy pods from overlapping during an
