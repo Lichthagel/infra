@@ -36,6 +36,8 @@ spec:
                   key: user-password
             - name: TZ
               value: "Europe/Berlin"
+            - name: MARIADB_AUTO_UPGRADE
+              value: "1"
           ports:
             - name: mariadb
               containerPort: 3306
