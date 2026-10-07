@@ -6,12 +6,7 @@ metadata:
     argocd.argoproj.io/sync-options: Prune=false
 spec:
   accessModes:
-    {{- toYaml .Values.providerAuthStorage.accessModes | nindent 4 }}
-  {{- if eq .Values.providerAuthStorage.storageClassName "-" }}
-  storageClassName: ""
-  {{- else if .Values.providerAuthStorage.storageClassName }}
-  storageClassName: {{ .Values.providerAuthStorage.storageClassName | quote }}
-  {{- end }}
+    - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.providerAuthStorage.size | quote }}
+      storage: 1Gi
