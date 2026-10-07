@@ -1,5 +1,33 @@
+# Persistent writable state for providers using file-based authentication.
+# Provider directories and mounts are configured through litellm-helm below.
+providerAuthStorage:
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  # Empty uses the cluster default. Use "-" for no storage class.
+  storageClassName: ""
+
 litellm-helm:
   replicaCount: 1
+  # Avoid overlapping pods using the local ReadWriteOnce authentication volume.
+  strategy:
+    type: Recreate
+
+  podSecurityContext:
+    fsGroup: 65534
+
+  volumes:
+    - name: provider-auth
+      persistentVolumeClaim:
+        claimName: litellm-provider-auth
+
+  volumeMounts:
+    - name: provider-auth
+      mountPath: /var/lib/litellm/provider-auth
+
+  # Configure each file-based provider to use its own directory on the volume.
+  envVars:
+    CHATGPT_TOKEN_DIR: /var/lib/litellm/provider-auth/chatgpt
   image:
     repository: ghcr.io/berriai/litellm-database
     pullPolicy: IfNotPresent
