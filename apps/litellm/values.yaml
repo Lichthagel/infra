@@ -1,12 +1,3 @@
-# Persistent writable state for providers using file-based authentication.
-# Provider directories and mounts are configured through litellm-helm below.
-providerAuthStorage:
-  size: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  # Empty uses the cluster default. Use "-" for no storage class.
-  storageClassName: ""
-
 litellm-helm:
   replicaCount: 1
   # Avoid overlapping pods using the local ReadWriteOnce authentication volume.
