@@ -23,6 +23,17 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       initContainers:
+        # The PVC mount root is owned by root (kubelet fsGroup only manages the
+        # group). OpenClaw >= 2026.9 fchmods its config dir on every config
+        # write, which fails with EPERM for a non-owner of the mount root.
+        # One-shot chown so the node user owns the state dir root.
+        - name: fix-state-owner
+          image: docker.io/library/busybox:1.37
+          imagePullPolicy: IfNotPresent
+          command: ["chown", "1000:1000", "/home/node/.openclaw"]
+          volumeMounts:
+            - name: openclaw-home
+              mountPath: /home/node/.openclaw
         - name: init-config
           image: docker.io/library/busybox:1.38
           imagePullPolicy: IfNotPresent
