@@ -18,7 +18,12 @@ data:
         "controlUi": {
           "enabled": true,
           "allowedOrigins": ["https://claw.licht.moe"]
-        }
+        },
+        "trustedProxies": [
+          "10.244.0.0/16",
+          "2001:db8:42::/56",
+          "10.96.0.0/12"
+        ]
       },
       "agents": {
         "defaults": {
