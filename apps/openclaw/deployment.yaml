@@ -1,0 +1,196 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openclaw
+  namespace: openclaw
+  labels:
+    app: openclaw
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: openclaw
+  template:
+    metadata:
+      labels:
+        app: openclaw
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: init-config
+          image: docker.io/library/busybox:1.37
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              # Seed-if-missing: the PVC copy owns config after first boot so edits made
+              # through OpenClaw (onboard, channels add, doctor --fix, Control UI) survive
+              # restarts. ConfigMap edits need an explicit reseed.
+              [ -f /home/node/.openclaw/openclaw.json ] || cp /config/openclaw.json /home/node/.openclaw/openclaw.json
+              mkdir -p /home/node/.openclaw/workspace
+              [ -f /home/node/.openclaw/workspace/AGENTS.md ] || cp /config/AGENTS.md /home/node/.openclaw/workspace/AGENTS.md
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          resources:
+            requests:
+              memory: 32Mi
+              cpu: 50m
+            limits:
+              memory: 64Mi
+              cpu: 100m
+          volumeMounts:
+            - name: openclaw-home
+              mountPath: /home/node/.openclaw
+            - name: config
+              mountPath: /config
+        - name: docker-cli
+          image: docker.io/library/docker:29-cli
+          imagePullPolicy: IfNotPresent
+          command: ["cp", "/usr/local/bin/docker", "/opt/docker-cli/docker"]
+          resources:
+            requests:
+              memory: 16Mi
+              cpu: 25m
+            limits:
+              memory: 32Mi
+              cpu: 100m
+          volumeMounts:
+            - name: docker-cli
+              mountPath: /opt/docker-cli
+      containers:
+        - name: gateway
+          image: ghcr.io/openclaw/openclaw:2026.9.7-browser
+          imagePullPolicy: IfNotPresent
+          command:
+            - node
+            - /app/dist/index.js
+            - gateway
+            - run
+          env:
+            - name: HOME
+              value: /home/node
+            - name: OPENCLAW_CONFIG_DIR
+              value: /home/node/.openclaw
+            - name: NODE_ENV
+              value: production
+            - name: TZ
+              value: Europe/Berlin
+            - name: PATH
+              value: /opt/docker-cli:/home/node/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+            - name: DOCKER_HOST
+              value: tcp://localhost:2375
+          # Injects every key in openclaw-secrets as an env var, so channel bot
+          # tokens and provider API keys can be added without touching this file.
+          # Explicit env vars above take precedence over secret-provided values.
+          envFrom:
+            - secretRef:
+                name: openclaw-secrets
+          ports:
+            - name: gateway
+              containerPort: 18789
+              protocol: TCP
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 2Gi
+              cpu: "1"
+          # Probes assert the JSON probe contract, not just the status code. The
+          # Control UI serves a catch-all 200 for unknown paths, so a status-only
+          # check would pass forever against an image whose probe route does not
+          # exist yet. Failing closed makes that mismatch loud instead of silent.
+          startupProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - "require('http').get('http://127.0.0.1:18789/readyz', r => { let b = ''; r.on('data', d => b += d); r.on('end', () => { try { process.exit(r.statusCode < 400 && JSON.parse(b).ready === true ? 0 : 1); } catch { process.exit(1); } }); }).on('error', () => process.exit(1))"
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - "require('http').get('http://127.0.0.1:18789/healthz', r => { let b = ''; r.on('data', d => b += d); r.on('end', () => { try { process.exit(r.statusCode < 400 && JSON.parse(b).ok === true ? 0 : 1); } catch { process.exit(1); } }); }).on('error', () => process.exit(1))"
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - "require('http').get('http://127.0.0.1:18789/readyz', r => { let b = ''; r.on('data', d => b += d); r.on('end', () => { try { process.exit(r.statusCode < 400 && JSON.parse(b).ready === true ? 0 : 1); } catch { process.exit(1); } }); }).on('error', () => process.exit(1))"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: openclaw-home
+              mountPath: /home/node/.openclaw
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /home/node/.cache
+            - name: shm
+              mountPath: /dev/shm
+            - name: docker-cli
+              mountPath: /opt/docker-cli
+              readOnly: true
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+        - name: dind
+          image: docker.io/library/docker:29-dind
+          imagePullPolicy: IfNotPresent
+          command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 6Gi
+          volumeMounts:
+            - name: dind-storage
+              mountPath: /var/lib/docker
+      volumes:
+        - name: openclaw-home
+          persistentVolumeClaim:
+            claimName: openclaw
+        - name: config
+          configMap:
+            name: openclaw-config
+        - name: tmp
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
+        - name: docker-cli
+          emptyDir: {}
+        - name: dind-storage
+          emptyDir: {}
