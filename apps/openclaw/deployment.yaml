@@ -28,7 +28,7 @@ spec:
         # write, which fails with EPERM for a non-owner of the mount root.
         # One-shot chown so the node user owns the state dir root.
         - name: fix-state-owner
-          image: docker.io/library/busybox:1.37
+          image: docker.io/library/busybox:1.38
           imagePullPolicy: IfNotPresent
           command: ["chown", "1000:1000", "/home/node/.openclaw"]
           volumeMounts:
