@@ -78,7 +78,7 @@ spec:
               mountPath: /opt/docker-cli
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:2026.9.9-browser
+          image: ghcr.io/openclaw/openclaw:2026.10.1-browser
           imagePullPolicy: IfNotPresent
           command:
             - node
