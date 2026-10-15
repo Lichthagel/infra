@@ -19,5 +19,18 @@
     "managerFilePatterns": [
       "/\\.yaml$/"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Group LiteLLM Helm chart and image updates",
+      "matchFileNames": [
+        "apps/litellm/**"
+      ],
+      "matchManagers": [
+        "helmv3",
+        "helm-values"
+      ],
+      "groupName": "LiteLLM"
+    }
+  ]
 }
