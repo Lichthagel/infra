@@ -23,17 +23,22 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       initContainers:
-        # The PVC mount root is owned by root (kubelet fsGroup only manages the
-        # group). OpenClaw >= 2026.9 fchmods its config dir on every config
-        # write, which fails with EPERM for a non-owner of the mount root.
-        # One-shot chown so the node user owns the state dir root.
+        # PVC mount roots are owned by root; fsGroup only manages the group.
+        # OpenClaw needs ownership of state, and its sibling capture directory
+        # must be writable for pre-repair snapshots.
         - name: fix-state-owner
           image: docker.io/library/busybox:1.38
           imagePullPolicy: IfNotPresent
-          command: ["chown", "1000:1000", "/home/node/.openclaw"]
+          command:
+            - chown
+            - 1000:1000
+            - /home/node/.openclaw
+            - /home/node/.openclaw.update-captures
           volumeMounts:
             - name: openclaw-home
               mountPath: /home/node/.openclaw
+            - name: openclaw-captures
+              mountPath: /home/node/.openclaw.update-captures
         - name: init-config
           image: docker.io/library/busybox:1.38
           imagePullPolicy: IfNotPresent
@@ -87,14 +92,16 @@ spec:
                 - ALL
           resources:
             requests:
-              memory: 128Mi
-              cpu: 50m
-            limits:
               memory: 512Mi
-              cpu: 500m
+              cpu: 250m
+            limits:
+              memory: 2Gi
+              cpu: "1"
           volumeMounts:
             - name: openclaw-home
               mountPath: /home/node/.openclaw
+            - name: openclaw-captures
+              mountPath: /home/node/.openclaw.update-captures
             - name: tmp
               mountPath: /tmp
             - name: cache
@@ -186,6 +193,8 @@ spec:
           volumeMounts:
             - name: openclaw-home
               mountPath: /home/node/.openclaw
+            - name: openclaw-captures
+              mountPath: /home/node/.openclaw.update-captures
             - name: tmp
               mountPath: /tmp
             - name: cache
@@ -227,6 +236,9 @@ spec:
         - name: openclaw-home
           persistentVolumeClaim:
             claimName: openclaw
+        - name: openclaw-captures
+          persistentVolumeClaim:
+            claimName: openclaw-captures
         - name: config
           configMap:
             name: openclaw-config

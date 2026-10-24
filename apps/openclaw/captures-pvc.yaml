@@ -1,0 +1,11 @@
+# Doctor captures contain the complete OpenClaw state, including credentials.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openclaw-captures
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
