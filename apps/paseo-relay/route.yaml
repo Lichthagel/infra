@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paseo-relay
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`paseo-relay.licht.moe`)
+      services:
+        - name: paseo-relay
+          port: http
+  tls:
+    secretName: paseo-relay-tls

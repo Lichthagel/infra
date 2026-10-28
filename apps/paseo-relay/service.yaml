@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paseo-relay
+spec:
+  selector:
+    app: paseo-relay
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
