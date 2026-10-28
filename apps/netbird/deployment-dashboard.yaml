@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: dashboard
-          image: docker.io/netbirdio/dashboard:v2.95.0
+          image: docker.io/netbirdio/dashboard:v2.96.0
           envFrom:
             - configMapRef:
                 name: netbird-dashboard
