@@ -71,7 +71,7 @@ spec:
         # before the gateway can start. Run it with the same image against the
         # PVC while the gateway is stopped, before starting the main container.
         - name: repair-agent-database
-          image: ghcr.io/openclaw/openclaw:2026.10.6-browser
+          image: ghcr.io/openclaw/openclaw:2026.10.9-browser
           imagePullPolicy: IfNotPresent
           command: ["node", "/app/dist/index.js", "doctor", "--fix"]
           env:
@@ -122,7 +122,7 @@ spec:
               mountPath: /opt/docker-cli
       containers:
         - name: gateway
-          image: ghcr.io/openclaw/openclaw:2026.10.6-browser
+          image: ghcr.io/openclaw/openclaw:2026.10.9-browser
           imagePullPolicy: IfNotPresent
           command:
             - node
