@@ -21,6 +21,15 @@
       "/\\.yaml$/"
     ]
   },
+  "customDatasources": {
+    "openclaw-browser-releases": {
+      "defaultRegistryUrlTemplate": "https://api.github.com/repos/openclaw/openclaw/releases?per_page=100",
+      "format": "json",
+      "transformTemplates": [
+        "{ \"releases\": $map($, function($release) { { \"version\": $replace($release.tag_name, /^v/, '') & '-browser', \"releaseTimestamp\": $release.published_at } }) }"
+      ]
+    }
+  },
   "packageRules": [
     {
       "description": "Group LiteLLM Helm chart and image updates",
@@ -53,6 +62,60 @@
       "overridePackageName": "BerriAI/litellm",
       "registryUrls": ["https://github.com"],
       "allowedVersions": "/^v[0-9]+\\.[0-9]+\\.[0-9]+$/",
+      "versioning": "semver"
+    },
+    {
+      "description": "Use Forgejo release timestamps for the Forgejo Helm chart",
+      "matchFileNames": ["apps/forge/Chart.yaml"],
+      "matchManagers": ["helmv3"],
+      "matchDepNames": ["forgejo"],
+      "overrideDatasource": "forgejo-releases",
+      "overridePackageName": "forgejo-helm/forgejo-helm",
+      "registryUrls": ["https://code.forgejo.org"],
+      "extractVersion": "^v(?<version>\\d+\\.\\d+\\.\\d+)$",
+      "versioning": "semver"
+    },
+    {
+      "description": "Use GitHub release timestamps for the Homarr Helm chart",
+      "matchFileNames": ["apps/homarr/Chart.yaml"],
+      "matchManagers": ["helmv3"],
+      "matchDepNames": ["homarr"],
+      "overrideDatasource": "github-releases",
+      "overridePackageName": "homarr-labs/charts",
+      "registryUrls": ["https://github.com"],
+      "extractVersion": "^homarr-(?<version>\\d+\\.\\d+\\.\\d+)$",
+      "versioning": "semver"
+    },
+    {
+      "description": "Use GitHub release timestamps for Gateway API",
+      "matchFileNames": [
+        "clusters/hizuru/gateway-api.yaml",
+        "clusters/sumireko/templates/gateway-api.yaml"
+      ],
+      "matchManagers": ["argocd"],
+      "matchDepNames": ["https://github.com/kubernetes-sigs/gateway-api"],
+      "overrideDatasource": "github-releases",
+      "overridePackageName": "kubernetes-sigs/gateway-api",
+      "registryUrls": ["https://github.com"],
+      "versioning": "semver"
+    },
+    {
+      "description": "Use GitHub release timestamps for OpenClaw browser images",
+      "matchFileNames": ["apps/openclaw/deployment.yaml"],
+      "matchManagers": ["kubernetes"],
+      "matchDepNames": ["ghcr.io/openclaw/openclaw"],
+      "overrideDatasource": "custom.openclaw-browser-releases",
+      "allowedVersions": "/^\\d{4}\\.\\d{1,2}\\.\\d+-browser$/",
+      "versioning": "docker"
+    },
+    {
+      "description": "Use GitHub release timestamps for the Renovate container image",
+      "matchFileNames": ["apps/renovate/templates/cronjob.yaml"],
+      "matchManagers": ["kubernetes"],
+      "matchDepNames": ["ghcr.io/renovatebot/renovate"],
+      "overrideDatasource": "github-releases",
+      "overridePackageName": "renovatebot/renovate",
+      "registryUrls": ["https://github.com"],
       "versioning": "semver"
     }
   ]
