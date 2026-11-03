@@ -44,7 +44,14 @@ litellm-helm:
     - litellm-env
 
   proxy_config:
-    model_list: []
+    model_list:
+      - model_name: parakeet-redux
+        litellm_params:
+          model: openai/whisper-1
+          api_base: http://parakeet-redux.parakeet-redux.svc.cluster.local:8000/v1
+          api_key: not-required
+        model_info:
+          mode: audio_transcription
     general_settings:
       store_model_in_db: true
       disable_env_credential_login: true
