@@ -23,7 +23,7 @@ spec:
         kubernetes.io/hostname: sumireko
       containers:
         - name: parakeet-redux
-          image: python:3.12-slim
+          image: python:3.15-slim
           imagePullPolicy: IfNotPresent
           workingDir: /app
           command:
