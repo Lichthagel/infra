@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: floppy
+  labels:
+    app: floppy
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: floppy
+  template:
+    metadata:
+      labels:
+        app: floppy
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 150
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: floppy
+          image: ghcr.io/dannyvfilms/floppy:latest@sha256:ff7867e6be13d1233efc14554dad71706bb59551b8b02b4a35700691503f18ef
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/Berlin
+            - name: URLS
+              value: https://floppy.licht.moe
+            - name: ALLOWED_HOSTS
+              value: floppy.licht.moe
+            - name: USE_X_FORWARDED_PROTO
+              value: "True"
+            - name: SESSION_COOKIE_SECURE
+              value: "True"
+            - name: CSRF_COOKIE_SECURE
+              value: "True"
+            - name: DEBUG
+              value: "False"
+            - name: REGISTRATION
+              value: "False"
+            - name: DEMO_ACCOUNT_ENABLED
+              value: "False"
+            - name: SECRET_FILE
+              value: /secrets/floppy/signing-key
+            - name: DB_HOST
+              value: postgres.postgres.svc.cluster.local
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: floppy
+            - name: DB_USER
+              value: floppy
+            - name: DB_PASSWORD_FILE
+              value: /secrets/postgres/password
+            - name: REDIS_URL
+              value: redis://valkey.valkey.svc.cluster.local:6379/1
+            - name: REDIS_PREFIX
+              value: "floppy:"
+            # Never change server-wide settings on the shared Valkey instance.
+            - name: FLOPPY_REDIS_MAXMEMORY
+              value: "0"
+            - name: FLOPPY_DATA_DIR
+              value: /floppy/db
+            - name: BACKUP_DIR
+              value: /floppy/db/backups
+          ports:
+            - name: http
+              containerPort: 8000
+          startupProbe:
+            httpGet:
+              path: /health/
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: floppy.licht.moe
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: http
+              httpHeaders:
+                - name: Host
+                  value: floppy.licht.moe
+            periodSeconds: 15
+            timeoutSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: data
+              mountPath: /floppy/db
+            - name: signing-key
+              mountPath: /secrets/floppy
+              readOnly: true
+            - name: postgres-password
+              mountPath: /secrets/postgres
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: floppy-data
+        - name: signing-key
+          secret:
+            secretName: floppy-secret
+            items:
+              - key: signing-key
+                path: signing-key
+        - name: postgres-password
+          secret:
+            secretName: floppy-postgres
+            items:
+              - key: password
+                path: password

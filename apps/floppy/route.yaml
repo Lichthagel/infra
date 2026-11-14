@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: floppy
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`floppy.licht.moe`)
+      services:
+        - name: floppy
+          port: http
+  tls:
+    secretName: floppy-tls
