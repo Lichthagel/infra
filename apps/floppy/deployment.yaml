@@ -29,7 +29,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: floppy
-          image: ghcr.io/dannyvfilms/floppy:latest@sha256:8e7ddac874f300033261ae778d3334e7fa47e240c1ffbde1d7663acbaa4c18a0
+          image: ghcr.io/dannyvfilms/floppy:26.11.12@sha256:f8ed2ad2ce767f3fb16663244206b586d92f21b88159253a015ff55d27fccb5e
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
