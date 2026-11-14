@@ -7,7 +7,6 @@
   "baseBranchPatterns": [
     "main"
   ],
-  "minimumReleaseAge": "24 hours",
   "labels": [
     "dependencies"
   ],
