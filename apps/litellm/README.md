@@ -5,11 +5,10 @@ and can still be managed through the UI.
 
 ## Upstream chart
 
-The vendored `charts/litellm-1.0.0.tgz` comes from `litellm/deploy/helm/litellm`
-in the upstream LiteLLM `v1.111.0` tag. For upgrades, package that directory
-from the new upstream tag and update `Chart.yaml` and the image tag in
-`values.yaml` together. Render with
-`helm template sumireko-litellm apps/litellm --namespace litellm` and check
+The dependency comes from `oci://ghcr.io/berriai/litellm/chart/litellm`.
+For upgrades, update the chart version in `Chart.yaml` and the image tag in
+`values.yaml` together. Run `helm dependency build apps/litellm`, then render
+with `helm template sumireko-litellm apps/litellm --namespace litellm` and check
 that the Deployment selector and Service name are unchanged. The wrapper's
 selector helper preserves the existing Deployment's immutable selector.
 
