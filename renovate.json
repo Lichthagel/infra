@@ -32,31 +32,15 @@
   "packageRules": [
     {
       "description": "Group LiteLLM Helm chart and image updates",
-      "matchFileNames": [
-        "apps/litellm/**"
-      ],
-      "matchManagers": [
-        "helmv3",
-        "helm-values"
-      ],
+      "matchFileNames": ["apps/litellm/**"],
+      "matchManagers": ["helmv3", "helm-values"],
       "groupName": "LiteLLM"
     },
     {
-      "description": "Use LiteLLM GitHub release timestamps for the Helm chart",
-      "matchFileNames": ["apps/litellm/Chart.yaml"],
-      "matchManagers": ["helmv3"],
-      "matchDepNames": ["litellm-helm"],
-      "overrideDatasource": "github-releases",
-      "overridePackageName": "BerriAI/litellm",
-      "registryUrls": ["https://github.com"],
-      "extractVersion": "^v(?<version>\\d+\\.\\d+\\.\\d+)$",
-      "versioning": "semver"
-    },
-    {
-      "description": "Use LiteLLM GitHub release timestamps for the database image",
+      "description": "Use LiteLLM GitHub release timestamps for the image",
       "matchFileNames": ["apps/litellm/values.yaml"],
       "matchManagers": ["helm-values"],
-      "matchDepNames": ["ghcr.io/berriai/litellm-database"],
+      "matchDepNames": ["ghcr.io/berriai/litellm"],
       "overrideDatasource": "github-releases",
       "overridePackageName": "BerriAI/litellm",
       "registryUrls": ["https://github.com"],

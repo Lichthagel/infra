@@ -3,15 +3,24 @@
 ArgoCD manages this chart on sumireko. Models are stored in the LiteLLM database
 and can still be managed through the UI.
 
+## Upstream chart
+
+The dependency comes from `oci://ghcr.io/berriai/litellm/chart/litellm`.
+For upgrades, update the chart version in `Chart.yaml` and the image tag in
+`values.yaml` together. Run `helm dependency build apps/litellm`, then render
+with `helm template sumireko-litellm apps/litellm --namespace litellm` and check
+that the Deployment selector and Service name are unchanged. The wrapper's
+selector helper preserves the existing Deployment's immutable selector.
+
 ## Persistent authentication files
 
 The chart creates the provider-neutral `litellm-provider-auth` PVC and mounts it
 at `/var/lib/litellm/provider-auth`. Each provider should use a separate
 subdirectory. Configure its documented token-directory environment variable
-through `litellm-helm.envVars`; only providers that support file-based credentials
+through `litellm.gateway.extraEnv`; only providers that support file-based credentials
 and a configurable path can use this arrangement.
 
-The claim uses 10 MiB with `ReadWriteOnce` access and the cluster default storage class. Keep its fixed name aligned with `litellm-helm.volumes`. The mount path and provider paths use the upstream chart values.
+The claim uses 10 MiB with `ReadWriteOnce` access and the cluster default storage class. Keep its fixed name aligned with `litellm.gateway.volumes`. The mount path and provider paths use the upstream chart values.
 
 The current deployment uses one replica and the cluster's default local-path
 storage. Recreate prevents old and new proxy pods from overlapping during an
@@ -19,9 +28,10 @@ update, at the cost of a short outage. Do not increase replicas for this setup.
 Multiple replicas require suitable shared storage AND provider support for
 concurrent token refresh; ReadWriteMany alone does not provide locking.
 
-The pod's fsGroup makes the volume accessible through group 65534, including
-when using an image running as that non-root user. If you change the runtime
-user/group, check permissions of existing token files as well.
+The unified proxy runs as UID 65532. An init container transfers ownership of
+the provider-auth files left by the old root image to that UID without following
+symlinks. It only mounts the provider-auth claim and runs after the old proxy
+stops. Verify token refresh after the first sync.
 
 The claim is excluded from automatic ArgoCD pruning because it contains mutable
 credentials. Explicitly delete it only when the stored logins are no longer

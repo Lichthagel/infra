@@ -1,61 +1,107 @@
-litellm-helm:
-  replicaCount: 1
-  # Avoid overlapping pods using the local ReadWriteOnce authentication volume.
-  strategy:
-    type: Recreate
+litellm:
+  fullnameOverride: sumireko-litellm
+  monolith:
+    enabled: true
 
-  podSecurityContext:
-    fsGroup: 65534
-
-  volumes:
-    - name: provider-auth
-      persistentVolumeClaim:
-        claimName: litellm-provider-auth
-
-  volumeMounts:
-    - name: provider-auth
-      mountPath: /var/lib/litellm/provider-auth
-
-  # Configure each file-based provider to use its own directory on the volume.
-  envVars:
-    CHATGPT_TOKEN_DIR: /var/lib/litellm/provider-auth/chatgpt
   image:
-    repository: ghcr.io/berriai/litellm-database
+    repository: ghcr.io/berriai/litellm
     pullPolicy: IfNotPresent
-    tag: "v1.110.3"
+    tag: "v1.111.0"
 
-  masterkeySecretName: litellm-masterkey
-  masterkeySecretKey: masterkey
+  masterKey:
+    secretName: litellm-masterkey
+    secretKey: masterkey
 
-  db:
-    useExisting: true
-    deployStandalone: false
-    endpoint: postgres.postgres.svc.cluster.local
-    database: litellm
-    secret:
-      name: litellm-db
-      usernameKey: username
-      passwordKey: password
+  database:
+    writer:
+      host: postgres.postgres.svc.cluster.local
+      dbname: litellm
+      passwordSecret:
+        name: litellm-db
+        usernameKey: username
+        passwordKey: password
 
-  redis:
-    enabled: false
+  migrationJob:
+    hooks:
+      helm:
+        enabled: false
+      argocd:
+        enabled: true
 
-  environmentSecrets:
-    - litellm-env
+  gateway:
+    replicaCount: 1
+    hpa:
+      enabled: false
+    # Avoid overlapping pods using the local ReadWriteOnce authentication volume.
+    strategy:
+      type: Recreate
+    # The legacy chart did not set CPU or memory requests or limits.
+    resources:
+      requests:
+        cpu: null
+        memory: null
+      limits:
+        cpu: null
+        memory: null
+    podSecurityContext:
+      fsGroup: 65534
 
-  proxy_config:
-    model_list:
-      - model_name: parakeet-redux
-        litellm_params:
-          model: openai/whisper-1
-          api_base: http://parakeet-redux.parakeet-redux.svc.cluster.local:8000/v1
-          api_key: not-required
-        model_info:
-          mode: audio_transcription
-    general_settings:
-      store_model_in_db: true
-      disable_env_credential_login: true
-    router_settings:
-      redis_host: "valkey.valkey.svc.cluster.local"
-      redis_port: 6379
-      redis_password: os.environ/REDIS_PASSWORD
+    volumes:
+      - name: provider-auth
+        persistentVolumeClaim:
+          claimName: litellm-provider-auth
+    volumeMounts:
+      - name: provider-auth
+        mountPath: /var/lib/litellm/provider-auth
+    # The old image wrote credentials as root. Hand ownership to the new image's UID.
+    extraInitContainers:
+      - name: migrate-provider-auth-owner
+        image: '{{ include "litellm.image" . }}'
+        command: [python, -B, -c]
+        args:
+          - |
+            import os
+            from pathlib import Path
+
+            def walk_error(error):
+                raise error
+
+            for directory, _, files in os.walk("/var/lib/litellm/provider-auth", onerror=walk_error):
+                for path in (Path(directory), *(Path(directory) / name for name in files)):
+                    if not path.is_symlink() and path.stat().st_uid != 65532:
+                        os.chown(path, 65532, -1, follow_symlinks=False)
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+            add: [CHOWN, DAC_OVERRIDE]
+        volumeMounts:
+          - name: provider-auth
+            mountPath: /var/lib/litellm/provider-auth
+
+    extraEnv:
+      - name: CHATGPT_TOKEN_DIR
+        value: /var/lib/litellm/provider-auth/chatgpt
+    envSecrets:
+      - litellm-env
+
+    config:
+      proxy_config:
+        model_list:
+          - model_name: parakeet-redux
+            litellm_params:
+              model: openai/whisper-1
+              api_base: http://parakeet-redux.parakeet-redux.svc.cluster.local:8000/v1
+              api_key: not-required
+            model_info:
+              mode: audio_transcription
+        general_settings:
+          store_model_in_db: true
+          disable_env_credential_login: true
+        router_settings:
+          redis_host: "valkey.valkey.svc.cluster.local"
+          redis_port: 6379
+          redis_password: os.environ/REDIS_PASSWORD
